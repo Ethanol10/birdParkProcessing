@@ -7,8 +7,7 @@ class Rain{
   int rainPrecipitation;
   Raindrop[] bigRaindrop;
   Raindrop[] mediumRaindrop;
-  Raindrop[] smallRaindrop;
-  
+
   Rain(int inputPrecip){
     rainPrecipitation = inputPrecip; 
     bigRaindrop = new Raindrop[rainPrecipitation]; 
