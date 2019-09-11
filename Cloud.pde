@@ -1,11 +1,11 @@
-class Cloud(){
+class Cloud{
   float shiftSpeed;
   
   Cloud(){
   
   }
   
-  int drawCloud(){
-  
+  void drawCloud(){
+    
   }
 }
