@@ -14,7 +14,7 @@ class Raindrop{
   float speed;
   boolean isAtEnd = false;
   color rainColour;
-  int lTermPoint = 500; //Lowest termination point
+  int lTermPoint; //Lowest termination point
  
   //Puddle Variables
   float currentDiameterPuddle = 0;
@@ -24,7 +24,8 @@ class Raindrop{
   float angleDrawn = 300;
   
   //Constructor, Initialise variables
-  Raindrop(int inpX, int inpY, float inpSpeed, float inpDiameter, color inpColor){
+  Raindrop(int inpX, int inpY, float inpSpeed, float inpDiameter, color inpColor, int inplTermPoint){
+    lTermPoint = inplTermPoint;
     positionX = inpX;
     positionY = inpY;
     speed = inpSpeed;
@@ -54,7 +55,7 @@ class Raindrop{
   void drawSplash(){  
     pushMatrix();
       noFill();
-      stroke(rainColour, 255 - (currentDiameterPuddle * 6));
+      stroke(rainColour, 255 - (currentDiameterPuddle * 10));
       strokeWeight(1);
       translate(positionX, positionY);
       if(gapStart < gapEnd){
