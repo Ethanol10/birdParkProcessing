@@ -1,7 +1,8 @@
 /*
   Class that draws an aggregate of clouds by using Cloud objects. 
   
-  This class should take in a density factor and the 
+  This class should take in a density factor and the populate the top of the canvas
+  with clouds. If possible, try to move the clouds away from each other.
 */
 class Clouds{
   int cloudDensity;  
@@ -22,5 +23,9 @@ class Clouds{
     for(int i = 0; i < cloudsArr.length; i++){
       cloudsArr[i].drawCloud();
     }
+  }
+  
+  int getCloudDensity(){
+    return cloudsArr.length;
   }
 }
