@@ -16,6 +16,7 @@ void draw(){
     for (int i = foods.size()-1; i >= 0; i--) { 
       Food food = foods.get(i);
       food.display();
+      food.move();
     } 
   }
   if(drawInstructions){
