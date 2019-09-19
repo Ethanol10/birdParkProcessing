@@ -17,6 +17,9 @@ void draw(){
       Food food = foods.get(i);
       food.display();
       food.move();
+      if (food.finished()) {
+        foods.remove(i);
+      }
     } 
   }
   if(drawInstructions){

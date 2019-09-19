@@ -5,6 +5,7 @@ class Food {
   float r1, r2, r3, r4;
   float speed;
   float gravity;
+  float life = 300;
 
   Food(float tempX, float tempY, float tempW) {
     x = tempX;
@@ -16,10 +17,11 @@ class Food {
     r4 = random(10, 30);
     speed = 0;
     gravity = 0.1;
+    float life = 300;
   }
   
   void display() {
-    fill(0);
+    fill(0,life);
     noStroke();
     
     ellipse(x,y,w,w);
@@ -35,6 +37,16 @@ class Food {
     if (y < height*3/4) {
       speed = speed + gravity;
       y = y + speed;
+    }
+  }
+
+  boolean finished() {
+    // Balls fade out
+    life--;
+    if (life < 0) {
+      return true;
+    } else {
+      return false;
     }
   }
 }  
