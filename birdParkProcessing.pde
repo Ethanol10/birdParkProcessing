@@ -3,6 +3,7 @@ void setup(){
 }
 
 void draw(){
-  
+  background(230, 255, 242);
 }
+
 
