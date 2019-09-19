@@ -1,7 +1,7 @@
 class Food {
   float x;
   float y;
-  float w;
+  float w, wStill;
   float r1, r2, r3, r4;
   float speed;
   float gravity;
@@ -10,7 +10,18 @@ class Food {
   Food(float tempX, float tempY, float tempW) {
     x = tempX;
     y = tempY;
-    w = tempW;
+    if (y < height*1/4) {
+      w = tempW*1/4;
+      wStill = tempW;
+    } else if (y < height*2/4) {
+      w = tempW*2/4;
+      wStill = tempW;
+    } else if (y < height*3/4) {
+      w = tempW*3/4;
+      wStill = tempW;
+    } else {
+      w = tempW;
+    }
     r1 = random(10, 30);
     r2 = random(10, 30);
     r3 = random(10, 30);
@@ -37,14 +48,20 @@ class Food {
     if (y < height*3/4) {
       speed = speed + gravity;
       y = y + speed;
+      if (w < wStill) {
+        w = w + 0.15;
+      }
     }
   }
 
   boolean finished() {
-    // Balls fade out
-    life--;
-    if (life < 0) {
-      return true;
+    if(w > wStill*3/4){
+      life--;
+      if (life < 0) {
+        return true;
+      } else {
+        return false;
+      }
     } else {
       return false;
     }

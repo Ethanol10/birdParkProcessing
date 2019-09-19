@@ -2,7 +2,7 @@ boolean drawFood = true;
 boolean drawInstructions = true;
 
 ArrayList<Food> foods;
-int foodWidth = 20;
+int foodWidth = 25;
 
 void setup(){
  size(1280, 720); 
@@ -25,7 +25,7 @@ void draw(){
   if(drawInstructions){
     pushMatrix();
       fill(0);
-      String s = "Press 'f' to draw food \nPress 'i' to open and close these instructions";
+      String s = "Press 'f' to draw food \nClick to throw some food\nPress 'i' to open and close these instructions";
       text(s, 10, 20);     
     popMatrix();
    }
