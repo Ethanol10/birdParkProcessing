@@ -2,7 +2,7 @@ boolean drawFood = true;
 boolean drawInstructions = true;
 
 ArrayList<Food> foods;
-int foodWidth = 25;
+int foodWidth = 15;
 
 void setup(){
  size(1280, 720); 
@@ -17,6 +17,7 @@ void draw(){
       Food food = foods.get(i);
       food.display();
       food.move();
+      food.birdMove();
       if (food.finished()) {
         foods.remove(i);
       }
