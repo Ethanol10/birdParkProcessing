@@ -3,7 +3,11 @@ class Food {
   float y;
   float xInt, yInt;
   float w, wStill;
-  float r1, r2, r3, r4;
+
+  int numOfFood = 5;
+  float [] randomFood1;
+  float [] randomFood2;
+
   float speed;
   float gravity;
   float birdSpeed = 1;
@@ -26,10 +30,14 @@ class Food {
     } else {
       w = tempW;
     }
-    r1 = random(10, 30);
-    r2 = random(10, 30);
-    r3 = random(10, 30);
-    r4 = random(10, 30);
+
+    randomFood1 = new float[numOfFood];
+    randomFood2 = new float[numOfFood]; 
+    for (int i = 0; i < numOfFood; i++) {
+      randomFood1[i] = random(10, 100);
+      randomFood2[i] = random(10, 100);
+    }
+
     speed = 0;
     gravity = 0.1;
     birdX = Math.round(random(0, width-50));
@@ -40,15 +48,14 @@ class Food {
   void display() {
     fill(0,life);
     noStroke();
+
+    ellipse(x, y, w*2, w);
+    for (int i = 0; i < numOfFood; i++) {
+      ellipse(x+randomFood1[i],y+randomFood2[i],w*2,w);
+      ellipse(x-randomFood2[i],y+randomFood1[i],w*2,w);
+    }
     
-    ellipse(x,y,w,w);
-    ellipse(x-r1,y-r4,w,w);
-    ellipse(x+r2,y-r3,w,w);
-    ellipse(x+r3,y+r2,w,w);
-    ellipse(x-r4,y+r1,w,w);
-    ellipse(x+r1,y-r2,w,w);
-    ellipse(x-r3,y+r4,w,w);
-    rect(birdX, birdY, 50, 50);
+    rect(birdX, birdY, 80, 50);
   }
 
   void move() {
