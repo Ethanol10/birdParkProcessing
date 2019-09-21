@@ -1,17 +1,27 @@
-class Weather{
+class Background{
+  //Weather Objects
   Rain rain;
   Clouds cloud;
-  int cloudDensity;
-  float rainfallMM;
+  Sun sun;
+  
+  //JSON objects
   JSONObject jsonWeatherData;
   JSONObject rainData;
   JSONObject cloudData;
+  
+  //Weather Flags
   boolean drawRain = true;
   boolean drawCloud = true;
   boolean drawThunder = true;
   boolean drawInstructions = true;
+  boolean drawSun = true;
   
-  Weather(){
+  //Other Vars
+  int cloudDensity;
+  float rainfallMM;
+
+  
+  Background(){
     jsonWeatherData = loadJSONObject("http://api.openweathermap.org/data/2.5/weather?q=Sydney,AU&appid=93af9bf890724d81ecaa676f91053303&units=metric");
     try{ //retrieve rain data from json object
       rainData = jsonWeatherData.getJSONObject("rain");
@@ -34,11 +44,22 @@ class Weather{
     }
     
     //Testing purposes only! Weather should only be spawned in the Background class.
-    rain = new Rain((int)rainfallMM, 500, 10, 20);
+    rain = new Rain((int)rainfallMM, 240, 10, 20);
     cloud = new Clouds(cloudDensity, 0.2, 150);
+    sun = new Sun(240, 150);
   }
   
-  void drawWeather(){
+  void drawBackground(){
+    if(drawSun){
+      sun.drawSun();
+    }
+    //Drawing field for testing purposes
+    pushMatrix();
+      noStroke();
+      fill(154,200,50);
+      rect(0, 240, 1280, 720);
+    popMatrix();
+    
     if(drawCloud){
       //draw Clouds
       cloud.drawClouds();
@@ -53,13 +74,15 @@ class Weather{
     if(drawInstructions){
       pushMatrix();
         fill(255,255,255);
-        String s = "Press 'c' to draw clouds \nPress 'r' to draw rain \nPress 't' to draw thunder \nPress '=' to increase rain precipitation \nPress '-' to decrease rain precipitation \nPress 'i' to open and close these instructions";
+        String s = "Press 'c' to draw clouds \nPress 'r' to draw rain \nPress 't' to draw thunder \nPress 's' to draw the sun \nPress 'a' to automate the sun movement \nPress '[' to move time back \nPress ']' to move time forward \nPress '=' to increase rain precipitation \nPress '-' to decrease rain precipitation \nPress 'i' to open and close these instructions";
         String s2 = "\nCurrent Rainfall: " + rain.getRainPrecip() + "mm";
         String s3 = "\nCurrent Cloud density: " + cloud.getCloudDensity() + "%";
+        String s4 = "\nCurrent Time: " + sun.currentTime();
          
-        text(s + s2 + s3, 10, 20);     
+        text(s + s2 + s3 + s4, 10, 20);     
       popMatrix();
     }
+    
   }
   
   void setRain(){
@@ -74,10 +97,22 @@ class Weather{
   void setInstructions(){
     drawInstructions = !drawInstructions;
   }
+  void setSun(){
+    drawSun = !drawSun;
+  }
   void increaseRain(){
     rain.increaseRainPrecip();
   }
   void decreaseRain(){
     rain.decreaseRainPrecip();
+  }
+  void moveSunForward(){
+    sun.sunForward();
+  }
+  void moveSunBackward(){
+    sun.sunBack();
+  }
+  void autoSun(){
+    sun.setAutoSun();
   }
 }

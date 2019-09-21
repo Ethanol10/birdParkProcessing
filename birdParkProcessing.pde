@@ -1,38 +1,49 @@
 Bird bird;
-Weather weatherHandler;
+Background backgroundHandler;
 
 void setup(){
  size(1280, 720);
  background(0, 10, 5); 
  bird = new Bird();
- weatherHandler = new Weather();
+ backgroundHandler = new Background();
 }
 
 void draw(){
-   background(0, 0, 0);
-   weatherHandler.drawWeather();  
-  
+  background(0, 0, 0);
+  backgroundHandler.drawBackground(); 
 }
 
 void keyPressed(){
     if(key == 'i'){
-      weatherHandler.setInstructions();
+      backgroundHandler.setInstructions();
     }
     if(key == 'r'){
-      weatherHandler.setRain();
+      backgroundHandler.setRain();
     }
     if(key == 'c'){
-      weatherHandler.setClouds();
+      backgroundHandler.setClouds();
     }
     if(key == 't'){
-      weatherHandler.setThunder();
+      backgroundHandler.setThunder();
     }
     if(key == '='){
       //increase rain frequency
-      weatherHandler.increaseRain();
+      backgroundHandler.increaseRain();
     }
     if(key == '-'){
-      weatherHandler.decreaseRain();
+      backgroundHandler.decreaseRain();
+    }
+    if(key == 's'){
+      backgroundHandler.setSun();
+    }
+    if(key == ']'){
+      backgroundHandler.moveSunForward();
+    }
+    if(key == '['){
+      backgroundHandler.moveSunBackward();
+    }
+    if(key == 'a'){
+      backgroundHandler.autoSun();
     }
 }
 
