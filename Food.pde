@@ -12,9 +12,11 @@ class Food {
   float gravity;
   float birdSpeed = 1;
   float life = 1000;
-  float birdX, birdY;
-  
 
+  float birdX, birdY;
+  float birdXFly = 0;
+  float birdYFly = 0;
+  
   Food(float tempX, float tempY, float tempW) {
     x = tempX;
     y = tempY;
@@ -42,7 +44,6 @@ class Food {
     gravity = 0.1;
     birdX = Math.round(random(0, width-50));
     birdY = Math.round(random(0, height-50));
-    
   }
   
   void display() {
@@ -55,7 +56,7 @@ class Food {
       ellipse(x-randomFood1[i],y+randomFood2[i],w*2,w);
     }
 
-    rect(birdX, birdY, 80, 50);
+    rect(birdX + birdXFly, birdY + birdYFly, 80, 50);
   }
 
   void move() {
@@ -76,27 +77,18 @@ class Food {
     if (y > height*3/4) {
       xInt = Math.round(x);
       yInt = Math.round(y);
-      
       // Birds sitting __ compare to food
       if(birdX > xInt){ // Right
-        birdX -= birdSpeed;
-        if(birdY < yInt){ // I (++) Quadrant
-          birdY += birdSpeed;
-        } else if (birdY > yInt) { // IV (+-) Quadrant
-          birdY -= birdSpeed;
-        } else if (birdY == yInt) { // + X-axis
-          birdY = yInt;
-        } 
+        if(birdXFly>(xInt - birdX)){
+          birdXFly--;
+        }
+        birdYMovement();
       } 
       if (birdX < xInt) { // Left
-        birdX += birdSpeed;
-        if(birdY < yInt){ // II (-+) Quadrant
-          birdY += birdSpeed;
-        } else if (birdY > yInt) { // III (--) Quadrant
-          birdY -= birdSpeed;
-        } else if (birdY == yInt) { // - X-axis
-          birdY = yInt;
+        if(birdXFly<(xInt - birdX)){
+          birdXFly++;
         }
+        birdYMovement();
       } 
       if (birdX == xInt) { // Y-axis
         if(birdY < yInt){ // + Y-axis
@@ -107,6 +99,23 @@ class Food {
           birdY = yInt;
         }
       }
+    }
+  }
+
+  void birdYMovement(){
+    // if bird sitting right to food, bird is in 
+    // I (++) Quadrant; IV (+-) Quadrant; + X-axis
+    // if sitting left to food, then it's in II, III Quadrant and -X-axis
+    if(birdY < yInt){ 
+      if(birdYFly < (yInt - birdY)){
+        birdYFly = (yInt - birdY)/(xInt - birdX)*birdXFly;
+      } 
+    } else if (birdY > yInt) { 
+      if(birdYFly > (yInt - birdY)){
+        birdYFly = (yInt - birdY)/(xInt - birdX)*birdXFly;
+      }
+    } else if (birdY == yInt) { 
+      birdY = yInt;
     }
   }
 
