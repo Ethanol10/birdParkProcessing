@@ -34,8 +34,8 @@ class Food {
     randomFood1 = new float[numOfFood];
     randomFood2 = new float[numOfFood]; 
     for (int i = 0; i < numOfFood; i++) {
-      randomFood1[i] = random(10, 100);
-      randomFood2[i] = random(10, 100);
+      randomFood1[i] = random(10, 80);
+      randomFood2[i] = random(10, 80);
     }
 
     speed = 0;
@@ -51,10 +51,10 @@ class Food {
 
     ellipse(x, y, w*2, w);
     for (int i = 0; i < numOfFood; i++) {
-      ellipse(x+randomFood1[i],y+randomFood2[i],w*2,w);
-      ellipse(x-randomFood2[i],y+randomFood1[i],w*2,w);
+      ellipse(x+randomFood2[i],y+randomFood1[i],w*2,w);
+      ellipse(x-randomFood1[i],y+randomFood2[i],w*2,w);
     }
-    
+
     rect(birdX, birdY, 80, 50);
   }
 
@@ -62,6 +62,10 @@ class Food {
     if (y < height*3/4) {
       speed = speed + gravity;
       y = y + speed;
+      for (int i = 0; i < numOfFood; i++) {
+        randomFood1[i] += i*0.15;
+        randomFood2[i] += i*0.25;
+      }
       if (w < wStill) {
         w = w + 0.15;
       }
