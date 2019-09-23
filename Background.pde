@@ -56,17 +56,17 @@ class Background{
     //Drawing field for testing purposes
     pushMatrix();
       noStroke();
-      fill(154,200,50);
+      fill(150);
       rect(0, 240, 1280, 720);
     popMatrix();
     
-    if(drawCloud){
-      //draw Clouds
-      cloud.drawClouds();
-    }
     //draw rain
     if(drawRain){
       rain.drawRain();
+    }
+    if(drawCloud){
+      //draw Clouds
+      cloud.drawClouds();
     }
     if(drawThunder){
       //draw Thunder
@@ -78,8 +78,9 @@ class Background{
         String s2 = "\nCurrent Rainfall: " + rain.getRainPrecip() + "mm";
         String s3 = "\nCurrent Cloud density: " + cloud.getCloudDensity() + "%";
         String s4 = "\nCurrent Time: " + sun.currentTime();
+        String s5 = "\nAuto mode Active?: " + sun.autoSunMovement;
          
-        text(s + s2 + s3 + s4, 10, 20);     
+        text(s + s2 + s3 + s4 + s5, 10, 20);     
       popMatrix();
     }
     
@@ -102,9 +103,11 @@ class Background{
   }
   void increaseRain(){
     rain.increaseRainPrecip();
+    cloud.increaseCloudDen();
   }
   void decreaseRain(){
     rain.decreaseRainPrecip();
+    cloud.decreaseCloudDen();
   }
   void moveSunForward(){
     sun.sunForward();

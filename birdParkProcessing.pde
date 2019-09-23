@@ -2,15 +2,15 @@ Bird bird;
 Background backgroundHandler;
 
 void setup(){
- size(1280, 720);
+ size(1280, 720, P3D);
  background(0, 10, 5); 
  bird = new Bird();
  backgroundHandler = new Background();
 }
 
 void draw(){
-  background(0, 0, 0);
-  backgroundHandler.drawBackground(); 
+  background(0);
+  backgroundHandler.drawBackground();
 }
 
 void keyPressed(){

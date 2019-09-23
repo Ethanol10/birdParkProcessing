@@ -6,26 +6,42 @@
 */
 class Clouds{
   int cloudDensity;  
-  Cloud[] cloudsArr;
+  ArrayList <Cloud> cloudsArr;
+  float shiftSpeed;
+  int maxDepth;
   
   //Constructor
-  Clouds(int inpCloudDensity, float shiftSpeed, int maxDepth){
+  Clouds(int inpCloudDensity, float inpShiftSpeed, int inpMaxDepth){
     cloudDensity = inpCloudDensity;
-    cloudsArr = new Cloud[cloudDensity];
+    cloudsArr = new ArrayList<Cloud>();
+    shiftSpeed = inpShiftSpeed;
+    maxDepth = inpMaxDepth;
      
-    for(int i = 0; i < cloudsArr.length; i++){
-      cloudsArr[i] = new Cloud(shiftSpeed, maxDepth);
+    for(int i = 0; i < cloudDensity; i++){
+      increaseCloudDen();
     }
   }
   
   //Draw Clouds
   void drawClouds(){
-    for(int i = 0; i < cloudsArr.length; i++){
-      cloudsArr[i].drawCloud();
+    for(int i = 0; i < cloudsArr.size(); i++){
+      cloudsArr.get(i).drawCloud();
     }
   }
   
   int getCloudDensity(){
-    return cloudsArr.length;
+    return cloudsArr.size();
+  }
+  
+  void decreaseCloudDen(){
+    if(cloudsArr.size() > 0){
+      cloudsArr.remove(cloudsArr.size() - 1);    
+    }
+  }
+  
+  void increaseCloudDen(){
+    if(cloudsArr.size() < 100){
+      cloudsArr.add(new Cloud(shiftSpeed, maxDepth));  
+    }
   }
 }
