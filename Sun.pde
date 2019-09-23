@@ -23,6 +23,7 @@ class Sun{
   boolean autoSunMovement;
   
   //time var
+  //It's safe to use these to refer to the current time as these are updated even in auto mode.
   int manualHour;
   int manualMinute;
   
@@ -61,9 +62,9 @@ class Sun{
       sunAngle = currentMinute / 4;
       yPos = sunBaseline - sin(radians(sunAngle)) * sunRaiseHeight;
       xPos = width * ((float)currentMinute / 780);
-      println("xpos: " + xPos);
-      println("ypos: " + yPos);
-      println("currentMinute: " + currentMinute);
+//      println("xpos: " + xPos);
+//      println("ypos: " + yPos);
+//      println("currentMinute: " + currentMinute);
       return;  
     }
     
@@ -77,9 +78,9 @@ class Sun{
       sunAngle = currentMinute / 4;
       yPos = sunBaseline - sin(radians(sunAngle)) * sunRaiseHeight;
       xPos = width * ((float)currentMinute / 720) - 30;
-      println("xpos: " + xPos);
-      println("ypos: " + yPos);
-      println("currentMinute: " + currentMinute);
+//      println("xpos: " + xPos);
+//      println("ypos: " + yPos);
+//      println("currentMinute: " + currentMinute);
       return;  
     }
     
@@ -133,5 +134,13 @@ class Sun{
       return manualHour + ":0" + manualMinute;
     }
     return manualHour + ":" + manualMinute;
+  }
+  
+  int getCurrentHour(){
+    return manualHour;
+  }
+  
+  int getCurrentMinute(){
+    return manualMinute;
   }
 }

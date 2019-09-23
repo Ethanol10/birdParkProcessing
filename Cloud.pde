@@ -20,7 +20,7 @@ class Cloud{
     
     pushMatrix();
       fill(100,100,100, 150);
-      stroke(100,100,100);
+      noStroke();
       translate(positionX, positionY);
       rect(0, 0, 150, 100);
     popMatrix();

@@ -4,17 +4,21 @@ class Background{
   Clouds cloud;
   Sun sun;
   
+  //Background Props
+  Ground ground;
+  
   //JSON objects
   JSONObject jsonWeatherData;
   JSONObject rainData;
   JSONObject cloudData;
   
-  //Weather Flags
+  //Object Flags
   boolean drawRain = true;
   boolean drawCloud = true;
   boolean drawThunder = true;
   boolean drawInstructions = true;
   boolean drawSun = true;
+  boolean drawGround = true;
   
   //Other Vars
   int cloudDensity;
@@ -43,23 +47,23 @@ class Background{
       cloudDensity = 2;
     }
     
-    //Testing purposes only! Weather should only be spawned in the Background class.
+    //Prepare objects
     rain = new Rain((int)rainfallMM, 240, 10, 20);
-    cloud = new Clouds(cloudDensity, 0.2, 150);
+    cloud = new Clouds(cloudDensity, 0.2, 100);
     sun = new Sun(240, 150);
+    ground = new Ground(0, 240, color(133, 168, 74), color(1, 50, 32));
   }
   
   void drawBackground(){
     if(drawSun){
       sun.drawSun();
     }
-    //Drawing field for testing purposes
-    pushMatrix();
-      noStroke();
-      fill(150);
-      rect(0, 240, 1280, 720);
-    popMatrix();
     
+    if(drawGround){
+      ground.calculateGroundColour(sun.calculateMinutes(sun.getCurrentHour(), sun.getCurrentMinute()));
+      ground.drawGround();
+    }
+
     //draw rain
     if(drawRain){
       rain.drawRain();
@@ -100,6 +104,9 @@ class Background{
   }
   void setSun(){
     drawSun = !drawSun;
+  }
+  void setGround(){
+    drawGround = !drawGround;
   }
   void increaseRain(){
     rain.increaseRainPrecip();
