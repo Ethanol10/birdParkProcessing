@@ -3,7 +3,7 @@ class MakeBird {
 
   //bird colours
   String [] colours = {
-    "red", "orange", "yellow", "green", "blue", "purple", "white", "black"
+    "red", "orange", "yellow", "green", "blue", "purple", "navy", "pink", "white", "black"
   };
 
   //control animation
@@ -11,246 +11,180 @@ class MakeBird {
   int flyInterval;
   int spawnInterval;
   int wait;
+  boolean spawn;
+  boolean fly;
 
   int action;
-  int direction; //which way the bird is facing: 1 = left, 2 = right
+  int direction; //which way the bird is facing: 1 = left, -1 = right
 
-  boolean spawning;
 
-  MakeBird() {
+  MakeBird(int y) {
     interval = 0;
     flyInterval = 0;
     spawnInterval = 0;
     wait = 0;
-
-    direction = (int)random(1, 3);
-    bird = new Bird((int)random(0, 1280), (int)random(300, 640), colours[(int)random(8)]);
+    randomDirection();
+    spawn = true;
+    bird = new Bird((int)random(0, 1280), y, colours[(int)random(10)]);
   }
 
 
   void use() {
-    checkPosition(); //check if the bird is still in frame
-    checkRespawn(); //check if enough time has passed for bird to respawn
-    
-    //fly in when spawning
-    /*
-    if(spawn == true){
-      if(spawnInterval == 0){
+    checkPosition(); //check bird position
+    //fly into frame from above
+    if (spawn == true) {
+      if (spawnInterval == 0) {
+        bird.respawn();
         ++spawnInterval;
       }
-      spawnLeft();
-      spawnRight();
+      spawn(direction);
     }
-    */
-      //randomly peck/hop/stand
-    if (checkMouse() == false && audio == false) {
-      if (interval == 0) {
-        if (action >= 1 && action <= 4) {
-          bird.standLeft();
-        } else {
-          bird.standRight();
-        }
-        newAction();
-        ++interval;
-      }
-      peckLeft();
-      hopLeft();
-      standLeft();
-      peckRight();
-      hopRight();
-      standRight();
-    }
-    //chirp when clicked
-    if (checkMouse() == true && audio == false) {
-      chirpLeft();
-      chirpRight();
-    }
+    stopSpawn();
     //fly away when noise is loud enough
-    if (audio == true) {
+    if (fly == true && spawn == false) {
       if (flyInterval == 0) {
         ++flyInterval;
       }
-      flyLeft();
-      flyRight();
+      fly(direction);
+    }
+    //randomly peck/hop/stand
+    if (checkMouse() == false && fly == false && spawn == false) {
+      if (interval == 0) {
+        bird.stand(direction);
+        newAction();
+        ++interval;
+      }
+      peck();
+      hop();
+      stand();
+    }
+    //chirp when clicked
+    if (checkMouse() == true && fly == false && spawn == false) {
+      chirp(direction);
     }
   }
 
 
-  void peckLeft() {
-    if (action == 1 && interval == 1) {
-      direction = 1;
-      bird.standLeft();
-      bird.startAnimation();
-    }
-    if (action == 1 && interval >= 2) {
-      bird.peckLeft();
-    }
-    if (action == 1 && interval == 20) {
-      interval = 0;
-    }
-    if (action == 1 && interval < 20 && interval > 0) {
-      ++interval;
-    }
-  }
-
-  void peckRight() {
-    if (action == 5 && interval == 1) {
-      direction = 2;
-      bird.standRight();
-      bird.startAnimation();
-    }
-    if (action == 5 && interval >= 2) {
-      bird.peckRight();
-    }
-    if (action == 5 && interval == 20) {
-      interval = 0;
-    }
-    if (action == 5 && interval < 20 && interval > 0) {
-      ++interval;
+  void peck() {
+    if (action == 1) {
+      if (interval == 1) {
+        randomDirection();
+        bird.stand(direction);
+        bird.startAnimation();
+      }
+      if (interval >= 2) {
+        bird.peck(direction);
+      }
+      if (interval == 20) {
+        interval = 0;
+      }
+      if (interval < 20 && interval > 0) {
+        ++interval;
+      }
     }
   }
 
 
-  void hopLeft() {
-    if (action == 2 && interval == 1) {
-      direction = 1;
-      bird.standLeft();
-      bird.startAnimation();
-    }
-    if (action == 2 && interval >= 2) {
-      bird.hopLeft();
-    }
-    if (action == 2 && interval >= 8) {
-      interval = 0;
-    }
-    if (action == 2 && interval < 8 && interval > 0) {
-      ++interval;
-    }
-  }
-
-  void hopRight() {
-    if (action == 6 && interval == 1) {
-      direction = 2;
-      bird.standRight();
-      bird.startAnimation();
-    }
-    if (action == 6 && interval >= 2) {
-      bird.hopRight();
-    }
-    if (action == 6 && interval >= 8) {
-      interval = 0;
-    }
-    if (action == 6 && interval < 8 && interval > 0) {
-      ++interval;
+  void hop() {
+    if (action == 2) {
+      if (interval == 1) {
+        randomDirection();
+        bird.stand(direction);
+        bird.startAnimation();
+      }
+      if (interval >= 2) {
+        bird.hop(direction);
+      }
+      if (interval >= 8) {
+        interval = 0;
+      }
+      if (interval < 8 && interval > 0) {
+        ++interval;
+      }
     }
   }
 
 
-  void standLeft() {
-    if ((action == 3 || action == 4 )&& interval >= 1 && interval <= 30) {
-      direction = 1;
-      bird.standLeft();
-    }
-    if ((action == 3 || action == 4 ) && interval >= 30) {
-      interval = 0;
-    }
-    if ((action == 3 || action == 4 ) && interval < 30 && interval > 0) {
-      ++interval;
-    }
-  }
-
-  void standRight() {
-    if ((action == 7 || action == 8) && interval >= 1 && interval <= 30) {
-      direction = 2;
-      bird.standRight();
-    }
-    if ((action == 7 || action == 8) && interval >= 30) {
-      interval = 0;
-    }
-    if ((action == 7 || action == 8) && interval < 30 && interval > 0) {
-      ++interval;
+  void stand() {
+    if (action == 3 || action == 4) {
+      if (interval == 1) {
+        randomDirection();
+        bird.stand(direction);
+      }
+      if (interval > 1 && interval <= 30) {
+        bird.stand(direction);
+      }
+      if (interval >= 30) {
+        interval = 0;
+      }
+      if (interval < 30 && interval > 0) {
+        ++interval;
+      }
     }
   }
 
 
-  void chirpLeft() {
+  void chirp(int a) {
+    int b = a;
     bird.y = bird.y2;
-    if (direction == 1) {
-      bird.chirpLeft();
-      interval = 0;
+    if (direction == -1) {
+      b = 2;
     }
-  }
-
-  void chirpRight() {
-    bird.y = bird.y2;
-    if (direction == 2) {
-      bird.chirpRight();
-      interval = 0;
-    }
+    bird.chirp(direction, b);
+    interval = 0;
   }
 
 
-  void flyLeft() {
-    if (direction == 1 && flyInterval == 1) {
-      bird.standLeft();
+  void fly(int a) {
+    if (flyInterval == 1) {
+      bird.stand(a);
       bird.startAnimation();
     }
-    if (direction == 1 && flyInterval >= 2 && flyInterval <= 5) {
-      bird.takeOffLeft();
+    if (flyInterval >= 2 && flyInterval <= 5) {
+      bird.crouch(a);
     }
-    if (direction == 1 && flyInterval >= 6) {
+    if (flyInterval >= 6) {
       bird.startAnimation();
-      bird.flyLeft();
+      bird.fly(a);
     }
-    if (direction == 1 && flyInterval >= 20) {
-      audio = false;
+    if (flyInterval >= 21) {
       flyInterval = 0;
     }
-    if (direction == 1 && flyInterval < 20 && flyInterval > 0) {
+    if (flyInterval < 20 && flyInterval > 0) {
       ++flyInterval;
     }
   }
 
-  void flyRight() {
-    if (direction == 2 && flyInterval == 1) {
-      bird.standRight();
+
+  void spawn(int a) {
+    if (spawnInterval == 1) {
       bird.startAnimation();
     }
-    if (direction == 2 && flyInterval >= 2 && flyInterval <= 5) {
-      bird.takeOffRight();
+    if (spawnInterval >= 2 && spawnInterval <= 9) {
+      bird.spawn(a);
     }
-    if (direction == 2 && flyInterval >= 6) {
+    if (spawnInterval >= 10) {
       bird.startAnimation();
-      bird.flyRight();
+      bird.land(a);
     }
-    if (direction == 2 && flyInterval >= 20) {
-      audio = false;
-      flyInterval = 0;
+    if (spawnInterval >= 14) {
+      spawnInterval = 0;
     }
-    if (direction == 2 && flyInterval < 20 && flyInterval > 0) {
-      ++flyInterval;
+    if (spawnInterval < 14 && spawnInterval > 0) {
+      ++spawnInterval;
     }
   }
 
-/*
-  void spawnLeft(){
-    if (direction == 1 && spawnInterval == 2){
-      bird.startAnimation();
-    }
-    if(direction == 1 && spawnInterval >=2){
-     
-    } 
-  }
-  
-  void spawnRight(){
-    if(direction == 2 && spawnInterval == 2){
-      bird.startAnimation();
-    }
-  }
-*/
 
   void newAction() {
-    action = (int)random(1, 9);
+    action = (int)random(1, 5);
+  }
+
+  void randomDirection() {
+    direction = (int)random(0, 2);
+    if (direction == 0) {
+      direction = -1;
+    }
   }
 
 
@@ -265,26 +199,32 @@ class MakeBird {
 
   void checkPosition() {
     if (bird.x < 0) {
-      bird.x += 50/bird.scale;
+      bird.x += 50;
     }
-    if (bird.x > 1280/bird.scale) {
-      bird.x -= 50/bird.scale;
+    if (bird.x > 1280) {
+      bird.x -= 50;
     }
-    if (bird.y <= -200) {
+    if (bird.y < 0) {
       ++wait;
     }
-  }
-
-
-  void checkRespawn() {
-    if (wait > 70) {
+    if (audio == true && bird.y == bird.y2){
+      fly = true;
+    }
+    //wait a bit before the birds respawn
+    if (wait > (int)random(70, 150)) {
+      spawn = true;
+      audio = false;
+      fly = false;
       wait = 0;
-      flyInterval = 0;
-      bird.y = bird.y2;
-      bird.x = (int)random(0, 1280/bird.scale);
     }
   }
-  
-  
+
+
+  void stopSpawn() {
+    if (bird.y == bird.y2) {
+      spawn = false;
+      spawnInterval = 0;
+    }
+  }
 }
 

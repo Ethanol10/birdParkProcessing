@@ -7,18 +7,20 @@ class Bird {
 
   int x;
   int y;
-  int x2;
   int y2;
+  int z;
+  int w;
 
   float scale;
 
 
   Bird(int x, int y, String colour) {
-    scale = 0.15 + (float)y/2000;
-    this.x = (int)(x/scale);
-    this.y = (int)(y/scale);
-    x2 = this.x; //save original x position
-    y2 = this.y; //save original y position
+    scale = 0.15 +(float)y/2000;
+    z = (int)(420*scale);
+    w = (int)(380*scale);
+    this.x = x;
+    this.y = y;
+    y2 = y; //save original y position
 
     //put frames into arrays
     int peckCount = 5;
@@ -48,88 +50,51 @@ class Bird {
       String filename = colour + "fly" + (i+1) + ".png";
       fly[i] = loadImage(filename);
     }
-    
+
     i = 0;
   }
 
 
   void startAnimation() {
+    //allows animation to start
     i = 1;
   }
 
 
-  void peckLeft() { 
+  void peck(int a) { 
     pushMatrix();
-    scale(scale, scale);
+    scale(1*a, 1);
+    int x2 = x*a;
     if (i > 0 && i <= 5) {
-      image(peck[0], x, y);
+      y = y2;
+      image(peck[0], x2, y, z, w);
     }
     if (i == 6) {
-      image(peck[1], x, y);
+      image(peck[1], x2, y, z, w);
     }
     if (i == 7) {
-      image(peck[2], x, y);
+      image(peck[2], x2, y, z, w);
     }
     if (i == 8) {
-      image(peck[3], x, y);
+      image(peck[3], x2, y, z, w);
     }    
     if (i == 9) {
-      image(peck[4], x, y);
-    }  
+      image(peck[4], x2, y, z, w);
+    }
     if (i == 10) {
-      image(peck[3], x, y);
+      image(peck[3], x2, y, z, w);
     }  
     if (i == 11) {
-      image(peck[2], x, y);
+      image(peck[2], x2, y, z, w);
     }  
     if (i == 12) {
-      image(peck[1], x, y);
+      image(peck[1], x2, y, z, w);
     }  
     if (i >= 13 && i < 20) {
-      image(peck[0], x, y);
+      image(peck[0], x2, y, z, w);
     }  
     if (i >= 20) {
-      image(peck[0], x, y);
-      i = 0;
-    }
-    if (i < 20 && i > 0) {
-      ++i;
-    }
-    popMatrix();
-  }
-
-  void peckRight() { 
-    pushMatrix();
-    scale(-scale, scale);
-    if (i > 0 && i <= 5) {
-      image(peck[0], -x, y);
-    }
-    if (i == 6) {
-      image(peck[1], -x, y);
-    }
-    if (i == 7) {
-      image(peck[2], -x, y);
-    }
-    if (i == 8) {
-      image(peck[3], -x, y);
-    }    
-    if (i == 9) {
-      image(peck[4], -x, y);
-    }  
-    if (i == 10) {
-      image(peck[3], -x, y);
-    }  
-    if (i == 11) {
-      image(peck[2], -x, y);
-    }  
-    if (i == 12) {
-      image(peck[1], -x, y);
-    }  
-    if (i >= 13 && i < 20) {
-      image(peck[0], -x, y);
-    }  
-    if (i >= 20) {
-      image(peck[0], -x, y);
+      image(peck[0], x2, y, z, w);
       i = 0;
     }
     if (i < 20 && i > 0) {
@@ -139,60 +104,32 @@ class Bird {
   }
 
 
-  void hopLeft() {
-    pushMatrix();
-    scale(scale, scale);
-    if (i == 1) {
-      image(hop[0], x, y);
-    }
-    if (i == 2) {
-      image(hop[1], x, y);
-    }
-    if (i == 3) {
-      shift(-100, -100);
-      image(hop[2], x, y);
-    }    
-    if (i == 4) {
-      shift(-100, 50);
-      image(hop[3], x, y);
-    }    
-    if (i == 5) {
-      shift(0, 50);
-      image(hop[1], x, y);
-    }  
-    if (i == 6) {
-      image(hop[0], x, y);
-      i = 0;
-    }  
-    if (i < 6) {
-      ++i;
-    }
-    popMatrix();
-  }
 
-  void hopRight() {
+  void hop(int a) {
     pushMatrix();
-    scale(-scale, scale);
+    scale(1*a, 1);
+    int x2 = x*a;
     if (i == 1) {
-      image(hop[0], -x, y);
+      y = y2;
+      image(hop[0], x2, y, z, w);
     }
     if (i == 2) {
-      image(hop[1], -x, y);
+      image(hop[1], x2, y, z, w);
     }
     if (i == 3) {
-      shift(100, -100);
-      image(hop[2], -x, y);
+      shift(-15*a, -40);
+      image(hop[2], x2, y, z, w);
     }    
     if (i == 4) {
-      shift(100, 50);
-      image(hop[3], -x, y);
+      shift(-15*a, 20);
+      image(hop[3], x2, y, z, w);
     }    
     if (i == 5) {
-      shift(0, 50);
-      image(hop[1], -x, y);
+      shift(0, 20);
+      image(hop[1], x2, y, z, w);
     }  
     if (i == 6) {
-      image(hop[0], -x, y);
+      image(hop[0], x2, y, z, w);
       i = 0;
     }  
     if (i < 6) {
@@ -202,72 +139,42 @@ class Bird {
   }
 
 
-  void chirpLeft() {
+  void chirp(int a, int b) {
     pushMatrix();
-    scale(scale, scale);
-    image(chirp[1], x, y);
-    popMatrix();
-  }
-
-  void chirpRight() {
-    pushMatrix();
-    scale(-scale, scale);
-    image(chirp[2], -x, y);
+    scale(1*a, 1);
+    int x2 = x*a;
+    y = y2;
+    image(chirp[b], x2, y, z, w);
     popMatrix();
   }
 
 
-void standLeft() {
+  void stand(int a) {
     pushMatrix();
-    scale(scale, scale);
-    image(peck[0], x, y);
-    popMatrix();
-  }
-
-  void standRight() {
-    pushMatrix(); 
-    scale(-scale, scale);
-    image(peck[0], -x, y);
+    scale(1*a, 1);
+    int x2 = x*a;
+    y = y2;
+    image(peck[0], x2, y, z, w);
     popMatrix();
   }
 
 
-  void takeOffLeft() {
+  void crouch(int a) {
     pushMatrix();
-    scale(scale, scale);
+    scale(1*a, 1);
+    int x2 = x*a;
     if (i == 1) {
-      image(fly[0], x, y);
+      y = y2;
+      image(fly[0], x2, y, z, w);
     }
     if (i == 2) {
-      image(fly[1], x, y);
+      image(fly[1], x2, y, z, w);
     }
     if (i == 3) {
-      image(fly[2], x, y);
+      image(fly[2], x2, y, z, w);
     }    
     if (i == 4) {
-      image(fly[3], x, y);
-      i = 0;
-    }      
-    if (i < 4) {
-      ++i;
-    }
-    popMatrix();
-  }
-
-  void takeOffRight() {
-    pushMatrix();
-    scale(-scale, scale);
-    if (i == 1) {
-      image(fly[0], -x, y);
-    }
-    if (i == 2) {
-      image(fly[1], -x, y);
-    }
-    if (i == 3) {
-      image(fly[2], -x, y);
-    }    
-    if (i == 4) {
-      image(fly[3], -x, y);
+      image(fly[3], x2, y, z, w);
       i = 0;
     }      
     if (i < 4) {
@@ -277,69 +184,71 @@ void standLeft() {
   }
 
 
-  void flyLeft() {
+  void fly(int a) {
     pushMatrix();
-    scale(scale, scale);
+    scale(1*a, 1);
+    int x2 = x*a;
+    int x3 = -50*a;
     if (i == 1) {
-      shift(-200, -400);
-      image(fly[4], x, y);
+      shift(x3, -100);
+      image(fly[4], x2, y, z, w);
     }    
     if (i == 2) {
-      shift(-200, -400);
-      image(fly[5], x, y);
+      shift(x3, -100);
+      image(fly[5], x2, y, z, w);
     }
     if (i == 3) {
-      shift(-200, -400);
-      image(fly[6], x, y);
+      shift(x3, -100);
+      image(fly[6], x2, y, z, w);
     }
     if (i == 4) {
-      shift(-200, -400);
-      image(fly[5], x, y);
+      shift(x3, -100);
+      image(fly[5], x2, y, z, w);
     }    
     if (i == 5) {
-      shift(-200, -400);
-      image(fly[4], x, y);
+      shift(x3, -100);
+      image(fly[4], x2, y, z, w);
     }
     if (i == 6) {
-      shift(-200, -400);
-      image(fly[5], x, y);
+      shift(x3, -100);
+      image(fly[5], x2, y, z, w);
     }
     if (i == 7) {
-      shift(-200, -400);
-      image(fly[6], x, y);
+      shift(x3, -100);
+      image(fly[6], x2, y, z, w);
     }    
     if (i == 8) {
-      shift(-200, -400);
-      image(fly[5], x, y);
+      shift(x3, -100);
+      image(fly[5], x2, y, z, w);
     }
     if (i == 9) {
-      shift(-200, -400);
-      image(fly[4], x, y);
+      shift(x3, -100);
+      image(fly[4], x2, y, z, w);
     }
     if (i == 10) {
-      shift(-200, -400);
-      image(fly[5], x, y);
+      shift(x3, -100);
+      image(fly[5], x2, y, z, w);
     }    
     if (i == 11) {
-      shift(-200, -400);
-      image(fly[6], x, y);
+      shift(x3, -100);
+      image(fly[6], x2, y, z, w);
     }
     if (i == 12) {
-      shift(-200, -400);
-      image(fly[5], x, y);
+      shift(x3, -100);
+      image(fly[5], x2, y, z, w);
     }
     if (i == 13) {
-      shift(-200, -400);
-      image(fly[4], x, y);
+      shift(x3, -100);
+      image(fly[4], x2, y, z, w);
     }    
     if (i == 14) {
-      shift(-200, -400);
-      image(fly[5], x, y);
-      i = 0;
+      shift(x3, -100);
+      image(fly[5], x2, y, z, w);
     }
     if (i == 15) {
-      shift(-200, -400);
-      image(fly[6], x, y);
+      shift(x3, -100);
+      image(fly[6], x2, y, z, w);
+      i = 0;
     }   
     if (i < 14) {
       ++i;
@@ -348,115 +257,70 @@ void standLeft() {
   }
 
 
-  void flyRight() {
+  void spawn(int a) {
     pushMatrix();
-    scale(-scale, scale);
+    scale(1*a, 1);
+    int x2 = x*a;
+    int x3 = -40*a;
+    int y3 = y2/8;
     if (i == 1) {
-      shift(200, -400);
-      image(fly[4], -x, y);
+      shift(x3, y3);
+      image(fly[5], x2, y, z, w);
     }
     if (i == 2) {
-      shift(200, -400);
-      image(fly[5], -x, y);
-    }    
+      shift(x3, y3);
+      image(fly[6], x2, y, z, w);
+    }
     if (i == 3) {
-      shift(200, -400);
-      image(fly[6], -x, y);
+      shift(x3, y3);
+      image(fly[5], x2, y, z, w);
     }
     if (i == 4) {
-      shift(200, -400);
-      image(fly[5], -x, y);
+      shift(x3, y3);
+      image(fly[4], x2, y, z, w);
     }
     if (i == 5) {
-      shift(200, -400);
-      image(fly[4], -x, y);
-    }    
+      shift(x3, y3);
+      image(fly[5], x2, y, z, w);
+    }
     if (i == 6) {
-      shift(200, -400);
-      image(fly[5], -x, y);
+      shift(x3, y3);
+      image(fly[6], x2, y, z, w);
     }
     if (i == 7) {
-      shift(200, -400);
-      image(fly[6], -x, y);
+      shift(x3, y3);
+      image(fly[5], x2, y, z, w);
     }
     if (i == 8) {
-      shift(200, -400);
-      image(fly[5], -x, y);
-    }    
-    if (i == 9) {
-      shift(200, -400);
-      image(fly[4], -x, y);
-    }
-    if (i == 10) {
-      shift(200, -400);
-      image(fly[5], -x, y);
-    }
-    if (i == 11) {
-      shift(200, -400);
-      image(fly[6], -x, y);
-    }    
-    if (i == 12) {
-      shift(200, -400);
-      image(fly[5], -x, y);
-    }
-    if (i == 13) {
-      shift(200, -400);
-      image(fly[4], -x, y);
-    }
-    if (i == 14) {
-      shift(200, -400);
-      image(fly[5], -x, y);
-    }    
-    if (i == 15) {
-      shift(200, -400);
-      image(fly[6], -x, y);
+      shift(x3, y3);
+      image(fly[4], x2, y, z, w);
       i = 0;
-    }   
-    if (i < 14) {
+    }
+    if (i < 8) {
       ++i;
     }
     popMatrix();
   }
 
-/*
-  void spawnLeft() {
+
+  void land(int a) {
     pushMatrix();
-    int a = (y2+150)/15;
-    scale(scale, scale);
-    if(i == 1){
-      y = -150;
-      image(fly[6], x, y);
-    }
-    if(i == 2){
-      
-    }
-    popMatrix();
-  }
-
-
-  void spawnRight() {
-    pushMatrix();
-    scale(-scale, scale);
-    popMatrix();
-  }
-
-
-  void landLeft() {
-    pushMatrix();
-    scale(-scale, scale);
+    scale(1*a, 1);
+    int x2 = x*a;
     if (i == 1) {
-      image(fly[3], -x, y);
+      y = y2;
+      image(fly[3], x2, y, z, w);
     }
     if (i == 2) {
-      image(fly[2], -x, y);
+      image(fly[2], x2, y, z, w);
     }
     if (i == 3) {
-      image(fly[1], -x, y);
-    }
+      image(fly[1], x2, y, z, w);
+    }    
     if (i == 4) {
-      image(fly[0], -x, y);
+      image(fly[0], x2, y, z, w);
       i = 0;
-    }
+    }      
     if (i < 4) {
       ++i;
     }
@@ -464,43 +328,26 @@ void standLeft() {
   }
 
 
-  void landRight() {
-    pushMatrix();
-    scale(scale, scale);
-    if (i == 1) {
-      image(fly[3], x, y);
-    }
-    if (i == 2) {
-      image(fly[2], x, y);
-    }
-    if (i == 3) {
-      image(fly[1], x, y);
-    }
-    if (i == 4) {
-      image(fly[0], x, y);
-      i = 0;
-    }
-    if (i < 4) {
-      ++i;
-    }
-    popMatrix();
+  void respawn() {
+    x = (int)random(340, 940);
+    y = 0;
   }
-*/
+
 
   void shift(int x, int y) {
-    this.x += x*scale;
-    this.y += y*scale;
+    this.x += x;
+    this.y += y;
   }
 
 
   int limitX(int boundary) {
-    int limit = (int)((x*scale) + (boundary*scale));
+    int limit = (int)(x + (boundary*scale));
     return limit;
   }
 
 
   int limitY(int boundary) {
-    int limit = (int)((y*scale) + (boundary*scale));
+    int limit = (int)(y + (boundary*scale));
     return limit;
   }
 }
