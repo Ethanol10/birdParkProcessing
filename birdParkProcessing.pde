@@ -54,14 +54,6 @@ void checkAudio() {
   }
 }
 
-
-void bg() {
-  background(255);
-  fill(180);
-  noStroke();
-  rect(0, 300, 1280, 420);
-}
-
 void keyPressed(){
     if(key == 'i'){
       backgroundHandler.setInstructions();

@@ -50,7 +50,7 @@ class Background{
     }
     
     //Prepare objects
-    rain = new Rain((int)rainfallMM, 240, 10, 20);
+    rain = new Rain((int)rainfallMM, 240, 30, 60);
     cloud = new Clouds(cloudDensity, 0.2, 100);
     sun = new Sun(240, 150);
     ground = new Ground(0, 240, color(133, 168, 74), color(1, 50, 32));
