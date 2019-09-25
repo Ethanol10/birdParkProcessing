@@ -6,6 +6,7 @@ class Background{
   
   //Background Props
   Ground ground;
+  Sky sky;
   
   //JSON objects
   JSONObject jsonWeatherData;
@@ -19,6 +20,7 @@ class Background{
   boolean drawInstructions = true;
   boolean drawSun = true;
   boolean drawGround = true;
+  boolean drawSky = true;
   
   //Other Vars
   int cloudDensity;
@@ -52,9 +54,14 @@ class Background{
     cloud = new Clouds(cloudDensity, 0.2, 100);
     sun = new Sun(240, 150);
     ground = new Ground(0, 240, color(133, 168, 74), color(1, 50, 32));
+    sky = new Sky(color(135, 206, 235), color(0,0,0));
   }
   
   void drawBackground(){
+    if(drawSky){
+      sky.calculateSkyColour(sun.calculateMinutes(sun.getCurrentHour(), sun.getCurrentMinute()));
+      sky.drawSky();
+    }
     if(drawSun){
       sun.drawSun();
     }
