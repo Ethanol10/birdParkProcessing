@@ -1,57 +1,135 @@
-/*
-1) A sun should not be drawn at night, during a thunderstorm, or during heavy clouds.
-2) Clouds can block sun depending on how many clouds there are. Perhaps create a density value that populates the sky with clouds.
-3) Rain can be drawn with clouds, thunderstorm, and/or sun. When getting weather data, scale the rain according to precipitation level.
-4) A moon should not be drawn in the morning, afternoon, or during heavy clouds.
-5) use https://temboo.com/processing/display-temperature to get weather data. 
-*/
-
 class Background{
-  //These variables should be either 1 or 0.
-  int sunFlag;
-  int rainFlag;
-  int cloudFlag;
-  int thunderFlag;
-  int windFlag; //this can be omitted if necessary
-  int moonFlag;
+  //Weather Objects
+  Rain rain;
+  Clouds cloud;
+  Sun sun;
   
-  //should be set to a value 0 to 2. 0 morning, 1 afternoon, 2 night
-  int dayNightFlag; 
+  //Background Props
+  Ground ground;
+  Sky sky;
+  
+  //JSON objects
+  JSONObject jsonWeatherData;
+  JSONObject rainData;
+  JSONObject cloudData;
+  
+  //Object Flags
+  boolean drawRain = true;
+  boolean drawCloud = true;
+  boolean drawThunder = true;
+  boolean drawInstructions = true;
+  boolean drawSun = true;
+  boolean drawGround = true;
+  boolean drawSky = true;
+  
+  //Other Vars
+  int cloudDensity;
+  float rainfallMM;
+
+  
   Background(){
-  
+    jsonWeatherData = loadJSONObject("http://api.openweathermap.org/data/2.5/weather?q=Sydney,AU&appid=93af9bf890724d81ecaa676f91053303&units=metric");
+    try{ //retrieve rain data from json object
+      rainData = jsonWeatherData.getJSONObject("rain");
+      rainfallMM = rainData.getFloat("3h");
+      println("rainDensity" + rainfallMM);
+    }
+    catch(Exception e){
+      rainData = null;
+      rainfallMM = 0.0;
+    }
+   
+    try{ //retrieve cloud data from json object
+      cloudData = jsonWeatherData.getJSONObject("clouds");
+      cloudDensity = cloudData.getInt("all");
+      println("cloudDensity" + cloudDensity);
+    }
+    catch(Exception e){
+      cloudData = null;
+      cloudDensity = 2;
+    }
+    
+    //Prepare objects
+    rain = new Rain((int)rainfallMM, 240, 10, 20);
+    cloud = new Clouds(cloudDensity, 0.2, 100);
+    sun = new Sun(240, 150);
+    ground = new Ground(0, 240, color(133, 168, 74), color(1, 50, 32));
+    sky = new Sky(color(135, 206, 235), color(0,0,0));
   }
   
-  //Call this to draw the background. In this function, figure out what to draw and call
-  //the appropriate function to draw the right weather type. i.e: call the drawSun()
-  //function if you're drawing a sun
   void drawBackground(){
+    if(drawSky){
+      sky.calculateSkyColour(sun.calculateMinutes(sun.getCurrentHour(), sun.getCurrentMinute()));
+      sky.drawSky();
+    }
+    if(drawSun){
+      sun.drawSun();
+    }
+    
+    if(drawGround){
+      ground.calculateGroundColour(sun.calculateMinutes(sun.getCurrentHour(), sun.getCurrentMinute()));
+      ground.drawGround();
+    }
+
+    //draw rain
+    if(drawRain){
+      rain.drawRain();
+    }
+    if(drawCloud){
+      //draw Clouds
+      cloud.drawClouds();
+    }
+    if(drawThunder){
+      //draw Thunder
+    }
+    if(drawInstructions){
+      pushMatrix();
+        fill(255,255,255);
+        String s = "Press 'c' to draw clouds \nPress 'r' to draw rain \nPress 't' to draw thunder \nPress 's' to draw the sun \nPress 'a' to automate the sun movement \nPress '[' to move time back \nPress ']' to move time forward \nPress '=' to increase rain precipitation \nPress '-' to decrease rain precipitation \nPress 'i' to open and close these instructions";
+        String s2 = "\nCurrent Rainfall: " + rain.getRainPrecip() + "mm";
+        String s3 = "\nCurrent Cloud density: " + cloud.getCloudDensity() + "%";
+        String s4 = "\nCurrent Time: " + sun.currentTime();
+        String s5 = "\nAuto mode Active?: " + sun.autoSunMovement;
+         
+        text(s + s2 + s3 + s4 + s5, 10, 20);     
+      popMatrix();
+    }
     
   }
-    
-  //draw a sun
-  void drawSun(){
-    
+  
+  void setRain(){
+    drawRain = !drawRain;
   }
-  
-  //Draw clouds
-  void drawClouds(){
-  
+  void setClouds(){
+    drawCloud = !drawCloud;
   }
-  
-  //Draw rain
-  void drawRain(){
-  
+  void setThunder(){
+    drawThunder = !drawThunder;
   }
-  
-  //Draw thunder
-  //thunder should only be drawn for a fraction of a second, simulating a thunderstorm.
-  //use an animation counter.
-  void drawThunder(){
-    
+  void setInstructions(){
+    drawInstructions = !drawInstructions;
   }
-  
-  //choose the colours to reflect the time of day
-  void drawTimeOfDay(){
-  
+  void setSun(){
+    drawSun = !drawSun;
+  }
+  void setGround(){
+    drawGround = !drawGround;
+  }
+  void increaseRain(){
+    rain.increaseRainPrecip();
+    cloud.increaseCloudDen();
+  }
+  void decreaseRain(){
+    rain.decreaseRainPrecip();
+    cloud.decreaseCloudDen();
+  }
+  void moveSunForward(){
+    sun.sunForward();
+  }
+  void moveSunBackward(){
+    sun.sunBack();
+  }
+  void autoSun(){
+    sun.setAutoSun();
   }
 }
