@@ -351,4 +351,3 @@ class Bird {
     return limit;
   }
 }
-
