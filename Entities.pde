@@ -1,14 +1,49 @@
 class Entities{
   ArrayList <Food> food;
   ArrayList <MakeBird> birds;
+    
+  int [] y;
+  int numberOfBirds;
+  AudioContext ac;
+  UGen microphoneIn;
+
   
   Entities(){
+    audio = false;
+
+    numberOfBirds = 15;
+    y = new int[numberOfBirds];
+    for (int i = 0; i < numberOfBirds; ++i) {
+      y[i] = (int)random(300, 640);
+    }
+    y = sort(y);
+  
+    birds = new ArrayList<MakeBird>();
+    for (int i = 0; i < numberOfBirds; ++i) {
+      birds.add(new MakeBird(y[i]));
+    }
     
+    ac = new AudioContext();
+    microphoneIn = ac.getAudioInput();
+    Gain g = new Gain(ac, 1, 0);
+    g.addInput(microphoneIn);
+    ac.out.addInput(g);
+    ac.start();
   }
   
   //Draw entities
   void drawEntities(){
-    
+    microphoneIn.update();
+    checkAudio();
+    for (int i = 0; i < numberOfBirds; ++i) {
+      birds.get(i).use();
+    }
+  }
+  
+  void checkAudio() {
+    if (microphoneIn.getOutBuffer(0)[0] > 0.07) {
+      audio = true;
+    }
   }
   
   //MakeBird has a bird within its class. make a method that allows entities to read those birds and pass relevant 

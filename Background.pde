@@ -8,6 +8,9 @@ class Background{
   Ground ground;
   Sky sky;
   
+  //Entities
+  Entities entityHandler;
+  
   //JSON objects
   JSONObject jsonWeatherData;
   JSONObject rainData;
@@ -55,6 +58,7 @@ class Background{
     sun = new Sun(240, 150);
     ground = new Ground(0, 240, color(133, 168, 74), color(1, 50, 32));
     sky = new Sky(color(135, 206, 235), color(0,0,0));
+    entityHandler = new Entities();
   }
   
   void drawBackground(){
@@ -70,7 +74,7 @@ class Background{
       ground.calculateGroundColour(sun.calculateMinutes(sun.getCurrentHour(), sun.getCurrentMinute()));
       ground.drawGround();
     }
-
+    entityHandler.drawEntities();
     //draw rain
     if(drawRain){
       rain.drawRain();

@@ -1,38 +1,13 @@
 import beads.*;
 import org.jaudiolibs.beads.*;
 
-ArrayList<MakeBird> birds;
-int [] y;
-int numberOfBirds;
-boolean audio;
-AudioContext ac;
-UGen microphoneIn;
 Background backgroundHandler;
+Boolean audio;
 
 void setup() {
   size(1280, 720, P3D);
   frameRate(24);
   imageMode(CENTER);
-  audio = false;
-
-  numberOfBirds = 15;
-  y = new int[numberOfBirds];
-  for (int i = 0; i < numberOfBirds; ++i) {
-    y[i] = (int)random(300, 640);
-  }
-  y = sort(y);
-
-  birds = new ArrayList<MakeBird>();
-  for (int i = 0; i < numberOfBirds; ++i) {
-    birds.add(new MakeBird(y[i]));
-  }
-  
-  ac = new AudioContext();
-  microphoneIn = ac.getAudioInput();
-  Gain g = new Gain(ac, 1, 0);
-  g.addInput(microphoneIn);
-  ac.out.addInput(g);
-  ac.start();
   
   backgroundHandler = new Background();
 }
@@ -41,17 +16,6 @@ void setup() {
 void draw() {
   background(0);
   backgroundHandler.drawBackground();
-  microphoneIn.update();
-  checkAudio();
-  for (int i = 0; i < numberOfBirds; ++i) {
-    birds.get(i).use();
-  }
-}
-
-void checkAudio() {
-  if (microphoneIn.getOutBuffer(0)[0] > 0.07) {
-    audio = true;
-  }
 }
 
 void keyPressed(){
