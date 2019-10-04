@@ -57,7 +57,7 @@ class Background{
     cloud = new Clouds(cloudDensity, 0.2, 100);
     sun = new Sun(240, 150);
     ground = new Ground(0, 240, color(133, 168, 74), color(1, 50, 32));
-    sky = new Sky(color(135, 206, 235), color(0,0,0), color( 253, 94, 83));
+    sky = new Sky(color(135, 206, 235), color(15, 15, 66), color(255, 149, 6), color(255, 97, 100));
     entityHandler = new Entities();
   }
   
