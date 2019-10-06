@@ -109,7 +109,6 @@ class Background{
       //draw Thunder
     }
     
-    
     weatherButtons.drawUIList();
     //Draw Instructions
     if(drawInstructions){
