@@ -10,6 +10,7 @@ class Background{
   
   //Entities
   Entities entityHandler;
+  UIList weatherButtons;
   
   //JSON objects
   JSONObject jsonWeatherData;
@@ -20,7 +21,7 @@ class Background{
   boolean drawRain = true;
   boolean drawCloud = true;
   boolean drawThunder = true;
-  boolean drawInstructions = true;
+  boolean drawInstructions = false;
   boolean drawSun = true;
   boolean drawGround = true;
   boolean drawSky = true;
@@ -59,33 +60,58 @@ class Background{
     ground = new Ground(0, 240, color(133, 168, 74), color(1, 50, 32));
     sky = new Sky(color(135, 206, 235), color(15, 15, 66), color(255, 149, 6), color(255, 97, 100));
     entityHandler = new Entities();
+    
+    //UILIST stuff
+    ArrayList<String> weatherList = new ArrayList<String>();
+    weatherList.add("Weather");
+    weatherList.add("Add 10mm rain");
+    weatherList.add("Remove 10mm rain");
+    weatherList.add("Add 2% cloud");
+    weatherList.add("Remove 2% cloud");
+    weatherList.add("Manual/Auto sun switch");
+    weatherButtons = new UIList(weatherList, 50, 50);
   }
   
   void drawBackground(){
+    //Draw Sky
     if(drawSky){
       sky.calculateSkyColour(sun.calculateMinutes(sun.getCurrentHour(), sun.getCurrentMinute()));
       sky.drawSky();
     }
+    
+    //Draw Sun
     if(drawSun){
       sun.drawSun();
     }
     
+    //Draw Ground
     if(drawGround){
       ground.calculateGroundColour(sun.calculateMinutes(sun.getCurrentHour(), sun.getCurrentMinute()));
       ground.drawGround();
     }
+    
+    //Draw entities
     entityHandler.drawEntities();
+    
     //draw rain
     if(drawRain){
       rain.drawRain();
     }
+    
+    //Draw clouds
     if(drawCloud){
       //draw Clouds
       cloud.drawClouds();
     }
+    
+    //Draw Thunder
     if(drawThunder){
       //draw Thunder
     }
+    
+    
+    weatherButtons.drawUIList();
+    //Draw Instructions
     if(drawInstructions){
       pushMatrix();
         fill(255,255,255);
