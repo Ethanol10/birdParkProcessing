@@ -1,22 +1,22 @@
-class Background{
+class Background {
   //Weather Objects
   Rain rain;
   Clouds cloud;
   Sun sun;
-  
+
   //Background Props
   Ground ground;
   Sky sky;
-  
+
   //Entities
   Entities entityHandler;
   UIList weatherButtons;
-  
+
   //JSON objects
   JSONObject jsonWeatherData;
   JSONObject rainData;
   JSONObject cloudData;
-  
+
   //Object Flags
   boolean drawRain = true;
   boolean drawCloud = true;
@@ -25,34 +25,34 @@ class Background{
   boolean drawSun = true;
   boolean drawGround = true;
   boolean drawSky = true;
-  
+
   //Other Vars
   int cloudDensity;
   float rainfallMM;
 
-  
-  Background(){
+
+  Background() {
     jsonWeatherData = loadJSONObject("http://api.openweathermap.org/data/2.5/weather?q=Sydney,AU&appid=93af9bf890724d81ecaa676f91053303&units=metric");
-    try{ //retrieve rain data from json object
+    try { //retrieve rain data from json object
       rainData = jsonWeatherData.getJSONObject("rain");
       rainfallMM = rainData.getFloat("3h");
       println("rainDensity" + rainfallMM);
     }
-    catch(Exception e){
+    catch(Exception e) {
       rainData = null;
       rainfallMM = 0.0;
     }
-   
-    try{ //retrieve cloud data from json object
+
+    try { //retrieve cloud data from json object
       cloudData = jsonWeatherData.getJSONObject("clouds");
       cloudDensity = cloudData.getInt("all");
       println("cloudDensity" + cloudDensity);
     }
-    catch(Exception e){
+    catch(Exception e) {
       cloudData = null;
       cloudDensity = 2;
     }
-    
+
     //Prepare objects
     rain = new Rain((int)rainfallMM, 240, 30, 60);
     cloud = new Clouds(cloudDensity, 0.2, 100);
@@ -60,7 +60,7 @@ class Background{
     ground = new Ground(0, 240, color(133, 168, 74), color(1, 50, 32));
     sky = new Sky(color(135, 206, 235), color(15, 15, 66), color(255, 149, 6), color(255, 97, 100));
     entityHandler = new Entities();
-    
+
     //UILIST stuff
     ArrayList<String> weatherList = new ArrayList<String>();
     weatherList.add("Weather");
@@ -71,94 +71,98 @@ class Background{
     weatherList.add("Manual/Auto sun switch");
     weatherButtons = new UIList(weatherList, 50, 50);
   }
-  
-  void drawBackground(){
+
+  void drawBackground() {
     //Draw Sky
-    if(drawSky){
+    if (drawSky) {
       sky.calculateSkyColour(sun.calculateMinutes(sun.getCurrentHour(), sun.getCurrentMinute()));
       sky.drawSky();
     }
-    
+
     //Draw Sun
-    if(drawSun){
+    if (drawSun) {
       sun.drawSun();
     }
-    
+
     //Draw Ground
-    if(drawGround){
+    if (drawGround) {
       ground.calculateGroundColour(sun.calculateMinutes(sun.getCurrentHour(), sun.getCurrentMinute()));
       ground.drawGround();
     }
-    
+
     //Draw entities
     entityHandler.drawEntities();
-    
+
     //draw rain
-    if(drawRain){
+    if (drawRain) {
       rain.drawRain();
     }
-    
+
     //Draw clouds
-    if(drawCloud){
+    if (drawCloud) {
       //draw Clouds
       cloud.drawClouds();
     }
-    
+
     //Draw Thunder
-    if(drawThunder){
+    if (drawThunder) {
       //draw Thunder
     }
-    
+
     weatherButtons.drawUIList();
     //Draw Instructions
-    if(drawInstructions){
+    if (drawInstructions) {
       pushMatrix();
-        fill(255,255,255);
-        String s = "Press 'c' to draw clouds \nPress 'r' to draw rain \nPress 't' to draw thunder \nPress 's' to draw the sun \nPress 'a' to automate the sun movement \nPress '[' to move time back \nPress ']' to move time forward \nPress '=' to increase rain precipitation \nPress '-' to decrease rain precipitation \nPress 'i' to open and close these instructions";
-        String s2 = "\nCurrent Rainfall: " + rain.getRainPrecip() + "mm";
-        String s3 = "\nCurrent Cloud density: " + cloud.getCloudDensity() + "%";
-        String s4 = "\nCurrent Time: " + sun.currentTime();
-        String s5 = "\nAuto mode Active?: " + sun.autoSunMovement;
-         
-        text(s + s2 + s3 + s4 + s5, 10, 20);     
+      fill(255, 255, 255);
+      String s = "Press 'c' to draw clouds \nPress 'r' to draw rain \nPress 't' to draw thunder \nPress 's' to draw the sun \nPress 'a' to automate the sun movement \nPress '[' to move time back \nPress ']' to move time forward \nPress '=' to increase rain precipitation \nPress '-' to decrease rain precipitation \nPress 'i' to open and close these instructions";
+      String s2 = "\nCurrent Rainfall: " + rain.getRainPrecip() + "mm";
+      String s3 = "\nCurrent Cloud density: " + cloud.getCloudDensity() + "%";
+      String s4 = "\nCurrent Time: " + sun.currentTime();
+      String s5 = "\nAuto mode Active?: " + sun.autoSunMovement;
+
+      text(s + s2 + s3 + s4 + s5, 10, 20);     
       popMatrix();
     }
-    
   }
-  
-  void setRain(){
+
+  void mouseClickedBackground() {
+    weatherButtons.detectPosition(mouseX, mouseY, weatherButtons.xPos, weatherButtons.yPos, weatherButtons.textHeight * weatherButtons.buttonList.size(), weatherButtons.largestWidth);
+  }
+
+  void setRain() {
     drawRain = !drawRain;
   }
-  void setClouds(){
+  void setClouds() {
     drawCloud = !drawCloud;
   }
-  void setThunder(){
+  void setThunder() {
     drawThunder = !drawThunder;
   }
-  void setInstructions(){
+  void setInstructions() {
     drawInstructions = !drawInstructions;
   }
-  void setSun(){
+  void setSun() {
     drawSun = !drawSun;
   }
-  void setGround(){
+  void setGround() {
     drawGround = !drawGround;
   }
-  void increaseRain(){
+  void increaseRain() {
     rain.increaseRainPrecip();
     cloud.increaseCloudDen();
   }
-  void decreaseRain(){
+  void decreaseRain() {
     rain.decreaseRainPrecip();
     cloud.decreaseCloudDen();
   }
-  void moveSunForward(){
+  void moveSunForward() {
     sun.sunForward();
   }
-  void moveSunBackward(){
+  void moveSunBackward() {
     sun.sunBack();
   }
-  void autoSun(){
+  void autoSun() {
     sun.setAutoSun();
   }
 }
+

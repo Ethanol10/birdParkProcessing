@@ -62,8 +62,15 @@ class UIList{
     
   }
   
-  String detectPosition(){
-    return "lmao";
+  String detectPosition(int px, int py, int x, int y, float colHeight, float colWidth){
+    int relativeYpos = (int)(py - (y - textHeight));
+    int position = relativeYpos / (int)textHeight; // Do integer division on purpose!
+
+    if(checkCollision(mouseX, mouseY, xPos, yPos,textHeight * buttonList.size(), largestWidth)){
+      return buttonList.get(position);
+    }
+    
+    return "n/a";
   }
   
   boolean checkCollision(int px, int py, int x, int y, float colHeight, float colWidth){
