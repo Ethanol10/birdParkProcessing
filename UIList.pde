@@ -65,11 +65,12 @@ class UIList{
   String detectPosition(int px, int py, int x, int y, float colHeight, float colWidth){
     int relativeYpos = (int)(py - (y - textHeight));
     int position = relativeYpos / (int)textHeight; // Do integer division on purpose!
-
+    println("position: " + position);
     if(checkCollision(mouseX, mouseY, xPos, yPos,textHeight * buttonList.size(), largestWidth)){
+      
       return buttonList.get(position);
     }
-    
+    println("invalid");
     return "n/a";
   }
   
@@ -87,5 +88,9 @@ class UIList{
       return true;
     }
     return false;
+  }
+  
+  void modifyListHeader(String inpString){
+    buttonList.set(0, "inpString");
   }
 }

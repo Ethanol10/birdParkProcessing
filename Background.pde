@@ -11,6 +11,9 @@ class Background {
   //Entities
   Entities entityHandler;
   UIList weatherButtons;
+  UIList rainModifiers;
+  UIList cloudModifiers;
+  UIList timeModifiers;
 
   //JSON objects
   JSONObject jsonWeatherData;
@@ -64,12 +67,17 @@ class Background {
     //UILIST stuff
     ArrayList<String> weatherList = new ArrayList<String>();
     weatherList.add("Weather");
-    weatherList.add("Add 10mm rain");
-    weatherList.add("Remove 10mm rain");
-    weatherList.add("Add 2% cloud");
-    weatherList.add("Remove 2% cloud");
+    weatherList.add("Turn on/off rain");
+    weatherList.add("Turn on/off clouds");
     weatherList.add("Manual/Auto sun switch");
     weatherButtons = new UIList(weatherList, 50, 50);
+    
+    //Rain
+    rainModifiers.add("Rain: (" + rain.getRainPrecip() + "mm)");
+    //Cloud
+    cloudModifiers.add("Clouds: (" + cloud.getCloudDensity() + "%)");
+    //Time
+    timeModifiers.add("Time: (" + sun.currentTime() + ")");
   }
 
   void drawBackground() {
