@@ -1,12 +1,13 @@
 class Entities{
-  ArrayList <Food> food;
+  ArrayList <Food> foods;
+  int foodWidth = 15;
+
   ArrayList <MakeBird> birds;
     
   int [] y;
   int numberOfBirds;
   AudioContext ac;
   UGen microphoneIn;
-
   
   Entities(){
     audio = false;
@@ -29,6 +30,8 @@ class Entities{
     g.addInput(microphoneIn);
     ac.out.addInput(g);
     ac.start();
+
+    foods = new ArrayList<Food>();
   }
   
   //Draw entities
@@ -38,6 +41,23 @@ class Entities{
     for (int i = 0; i < numberOfBirds; ++i) {
       birds.get(i).use();
     }
+    try {
+      for (int j = foods.size()-1; j >= 0; j--) { 
+        Food food = foods.get(j);
+        food.display();
+        food.move();
+        food.birdMove();
+        if (food.finished()) {
+          foods.remove(j);
+        }
+      }
+    } catch (Exception e) {
+      println("foods.size is null");
+    }
+  }
+
+  void addEntity(){
+    foods.add(new Food(mouseX, mouseY, foodWidth));
   }
   
   void checkAudio() {

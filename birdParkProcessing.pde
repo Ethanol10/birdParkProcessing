@@ -51,3 +51,7 @@ void keyPressed(){
       backgroundHandler.autoSun();
     }
  }
+
+void mousePressed() {
+  backgroundHandler.addFood();
+}

@@ -136,4 +136,8 @@ class Background{
   void autoSun(){
     sun.setAutoSun();
   }
+
+  void addFood(){
+    entityHandler.addEntity();
+  }
 }
