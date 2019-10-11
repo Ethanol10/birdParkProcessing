@@ -38,12 +38,6 @@ class Entities{
   void drawEntities(){
     microphoneIn.update();
     checkAudio();
-    for (int i = 0; i < numberOfBirds; ++i) {
-      birds.get(i).use();
-      for(int k = 0; k< foods.size(); k++){
-        birds.get(i).checkFoodPosition(foods.get(k).getFoodXPosition(),foods.get(k).getFoodYPosition());
-      }
-    }
     try {
       for (int j = foods.size()-1; j >= 0; j--) { 
         Food food = foods.get(j);
@@ -57,6 +51,13 @@ class Entities{
     } catch (Exception e) {
       println("foods.size is null");
     }
+    for (int i = 0; i < numberOfBirds; ++i) {
+      birds.get(i).use();
+      for(int k = 0; k< foods.size(); k++){
+        birds.get(i).checkFoodPosition(foods.get(k).getFoodXPosition(),foods.get(k).getFoodYPosition());
+      }
+    }
+    
   }
 
   void addEntity(){

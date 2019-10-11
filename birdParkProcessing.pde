@@ -20,6 +20,9 @@ void draw() {
 
 void mousePressed(){
   backgroundHandler.mouseClickedBackground();
+  if(mouseY > 200){
+    backgroundHandler.addFood();
+  }
 }
 
 void keyPressed(){
@@ -55,7 +58,3 @@ void keyPressed(){
       backgroundHandler.autoSun();
     }
  }
-
-void mousePressed() {
-  backgroundHandler.addFood();
-}
