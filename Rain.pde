@@ -44,11 +44,13 @@ class Rain{
   }
   
   void increaseRainPrecip(){
-    bigRaindrop.add(new Raindrop((int)random(width), (int)random(height), 
+    if(bigRaindrop.size() < 100){
+      bigRaindrop.add(new Raindrop((int)random(width), (int)random(height), 
         (float)round(random(minSpeed, maxSpeed)), 2.0, color(135,206,250), lTermPoint));
       
-    mediumRaindrop.add(new Raindrop((int)random(width), (int)random(height),
-        (float)round(random(minSpeed, maxSpeed)), 1.0, color(0,191,255), lTermPoint));
+      mediumRaindrop.add(new Raindrop((int)random(width), (int)random(height),
+        (float)round(random(minSpeed, maxSpeed)), 1.0, color(0,191,255), lTermPoint)); 
+    }
   }
   
   int getRainPrecip(){

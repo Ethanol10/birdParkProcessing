@@ -16,6 +16,10 @@ void setup() {
 void draw() {
   background(0);
   backgroundHandler.drawBackground();
+} 
+
+void mousePressed(){
+  backgroundHandler.mouseClickedBackground();
 }
 
 void keyPressed(){
