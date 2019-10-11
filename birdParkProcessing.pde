@@ -6,7 +6,6 @@ Boolean audio;
 
 void setup() {
   size(1280, 720, P3D);
-  frameRate(24);
   imageMode(CENTER);
   
   backgroundHandler = new Background();

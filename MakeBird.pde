@@ -34,55 +34,58 @@ class MakeBird {
   }
 
 
-  void use() {
+   void use() {
     checkPosition(); //check bird position
     //fly into frame from above
-    if (spawn == true) {
+    if (spawn) {
       if (spawnInterval == 0) {
         bird.respawn();
-        ++spawnInterval;
+        spawnInterval += 2;
       }
       spawn(direction);
     }
     stopSpawn();
     //fly away when noise is loud enough
-    if (fly == true && spawn == false) {
+    if (fly && !spawn) {
       if (flyInterval == 0) {
-        ++flyInterval;
+        flyInterval += 2;
       }
       fly(direction);
     }
     //randomly peck/hop/stand
-    if (checkMouse() == false && fly == false && spawn == false) {
+    if (!checkMouse() && !fly && !spawn) {
       if (interval == 0) {
         bird.stand(direction);
         newAction();
-        ++interval;
+        interval += 2;
       }
       peck();
       hop();
       stand();
     }
     //chirp when clicked
-    if (checkMouse() == true && fly == false && spawn == false) {
+    if (checkMouse() && !fly && !spawn) {
       chirp(direction);
     }
   }
 
+
   void peck() {
     if (action == 1) {
-      if (interval == 1) {
+      if (interval == 2) {
         randomDirection();
+      }
+      if (interval >= 2 && interval <= 3) {
         bird.stand(direction);
         bird.startAnimation();
       }
-      if (interval >= 2) {
+      if (interval >= 4) {
         bird.peck(direction);
       }
-      if (interval == 20) {
+      if (interval == 42) {
         interval = 0;
       }
-      if (interval < 20 && interval > 0) {
+      if (interval < 42 && interval > 0) {
         ++interval;
       }
     }
@@ -91,18 +94,20 @@ class MakeBird {
 
   void hop() {
     if (action == 2) {
-      if (interval == 1) {
+      if (interval == 2) {
         randomDirection();
+      }
+      if (interval >= 2 && interval <= 3) {
         bird.stand(direction);
         bird.startAnimation();
       }
-      if (interval >= 2) {
+      if (interval >= 4) {
         bird.hop(direction);
       }
-      if (interval >= 8) {
+      if (interval >= 14) {
         interval = 0;
       }
-      if (interval < 8 && interval > 0) {
+      if (interval < 14 && interval > 0) {
         ++interval;
       }
     }
@@ -110,18 +115,20 @@ class MakeBird {
 
 
   void stand() {
-    if (action == 3 || action == 4) {
-      if (interval == 1) {
+    if (action >= 3 && action <= 6) {
+      if (interval == 2) {
         randomDirection();
+      }
+      if (interval >= 2 && interval <= 3) {
         bird.stand(direction);
       }
-      if (interval > 1 && interval <= 30) {
+      if (interval >= 4 && interval <= 60) {
         bird.stand(direction);
       }
-      if (interval >= 30) {
+      if (interval >= 60) {
         interval = 0;
       }
-      if (interval < 30 && interval > 0) {
+      if (interval < 60 && interval > 0) {
         ++interval;
       }
     }
@@ -140,48 +147,52 @@ class MakeBird {
 
 
   void fly(int a) {
-    if (flyInterval == 1) {
+    if (flyInterval >= 2 && flyInterval <= 3) {
       bird.stand(a);
       bird.startAnimation();
     }
-    if (flyInterval >= 2 && flyInterval <= 5) {
+    if (flyInterval >= 4 && flyInterval <= 10) {
       bird.crouch(a);
     }
-    if (flyInterval >= 6) {
+    if (flyInterval == 11) {
       bird.startAnimation();
+    }
+    if (flyInterval >= 11) {
       bird.fly(a);
     }
-    if (flyInterval >= 21) {
+    if (flyInterval >= 41) {
       flyInterval = 0;
     }
-    if (flyInterval < 20 && flyInterval > 0) {
+    if (flyInterval < 40 && flyInterval > 0) {
       ++flyInterval;
     }
   }
 
 
   void spawn(int a) {
-    if (spawnInterval == 1) {
+    if (spawnInterval >= 2 && spawnInterval <= 3) {
       bird.startAnimation();
     }
-    if (spawnInterval >= 2 && spawnInterval <= 9) {
+    if (spawnInterval >= 4 && spawnInterval <= 18) {
       bird.spawn(a);
     }
-    if (spawnInterval >= 10) {
+    if (spawnInterval == 19) {
       bird.startAnimation();
+    }
+    if (spawnInterval >= 19) {
       bird.land(a);
     }
-    if (spawnInterval >= 14) {
+    if (spawnInterval >= 27) {
       spawnInterval = 0;
     }
-    if (spawnInterval < 14 && spawnInterval > 0) {
+    if (spawnInterval < 27 && spawnInterval > 0) {
       ++spawnInterval;
     }
   }
 
 
   void newAction() {
-    action = (int)random(1, 5);
+    action = (int)random(1, 7);
   }
 
   void randomDirection() {
@@ -215,7 +226,7 @@ class MakeBird {
       fly = true;
     }
     //wait a bit before the birds respawn
-    if (wait > (int)random(70, 150)) {
+    if (wait > (int)random(140, 300)) {
       spawn = true;
       audio = false;
       fly = false;
