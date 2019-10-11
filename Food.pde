@@ -56,7 +56,7 @@ class Food {
       ellipse(x-randomFood1[i],y+randomFood2[i],w*2,w);
     }
 
-    rect(birdX + birdXFly, birdY + birdYFly, 80, 50);
+    //rect(birdX + birdXFly, birdY + birdYFly, 80, 50);
   }
 
   void move() {
@@ -71,6 +71,13 @@ class Food {
         w = w + 0.15;
       }
     }
+  }
+
+  float getFoodXPosition(){
+    return x;
+  }
+  float getFoodYPosition(){
+    return y;
   }
 
   void birdMove() {

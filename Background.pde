@@ -227,7 +227,8 @@ class Background {
       }
     }
   }
-
+  
+  //Weather Stuff
   void setRain() {
     drawRain = !drawRain;
   }
@@ -267,5 +268,9 @@ class Background {
   void autoSun() {
     sun.setAutoSun();
   }
-}
 
+  //Add food
+  void addFood(){
+    entityHandler.addEntity();
+  }
+}

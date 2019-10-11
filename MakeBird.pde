@@ -17,6 +17,9 @@ class MakeBird {
   int action;
   int direction; //which way the bird is facing: 1 = left, -1 = right
 
+  int foodXPosition;
+  int foodYPosition;
+  boolean isMoving = false;
 
   MakeBird(int y) {
     interval = 0;
@@ -26,6 +29,8 @@ class MakeBird {
     randomDirection();
     spawn = true;
     bird = new Bird((int)random(0, 1280), y, colours[(int)random(10)]);
+    foodXPosition = 0;
+    foodYPosition = 0;
   }
 
 
@@ -63,7 +68,6 @@ class MakeBird {
       chirp(direction);
     }
   }
-
 
   void peck() {
     if (action == 1) {
@@ -225,6 +229,27 @@ class MakeBird {
       spawn = false;
       spawnInterval = 0;
     }
+  }
+
+  void checkFoodPosition(float foodXPosition, float foodYPosition){
+    if (isMoving == false){
+      if(checkRange(foodXPosition, foodYPosition)){
+        isMoving = true;
+        this.foodXPosition = int(foodXPosition);
+        this.foodYPosition = int(foodYPosition);
+      }
+    }
+  }
+
+  boolean checkRange(float foodXPosition, float foodYPosition){
+    float distX = foodXPosition - bird.x;
+    float distY = foodYPosition - bird.y;
+    float distance = sqrt( (distX*distX) + (distY*distY) );
+  
+    if (distance <= 200) {
+      return true;
+    }
+    return false;
   }
 }
 
