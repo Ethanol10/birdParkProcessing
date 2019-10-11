@@ -40,13 +40,16 @@ class Entities{
     checkAudio();
     for (int i = 0; i < numberOfBirds; ++i) {
       birds.get(i).use();
+      for(int k = 0; k< foods.size(); k++){
+        birds.get(i).checkFoodPosition(foods.get(k).getFoodXPosition(),foods.get(k).getFoodYPosition());
+      }
     }
     try {
       for (int j = foods.size()-1; j >= 0; j--) { 
         Food food = foods.get(j);
         food.display();
         food.move();
-        food.birdMove();
+        // food.birdMove();
         if (food.finished()) {
           foods.remove(j);
         }
