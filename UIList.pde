@@ -23,6 +23,7 @@ class UIList{
   int yPos;
   boolean isExpanded;
   int textSizeVar = 15;
+  float headerSize;
   
   UIList(ArrayList<String> inpButtonList, int inpX, int inpY){
     xPos = inpX;
@@ -30,6 +31,7 @@ class UIList{
     buttonList = inpButtonList;
     isExpanded = false;
     textSize(textSizeVar);
+    headerSize = textWidth(buttonList.get(0));
     largestWidth = textWidth(buttonList.get(0));
     textHeight = textAscent();
     for(int i = 0; i < buttonList.size(); i++){
@@ -49,14 +51,14 @@ class UIList{
         for(int i = 1; i < buttonList.size(); i++){
           text(buttonList.get(i), xPos, yPos + (textHeight * i));
         }
-        isExpanded = checkCollision(mouseX, mouseY, xPos, yPos,textHeight * buttonList.size(), largestWidth);
+        isExpanded = checkCollision(mouseX, mouseY, xPos, yPos,textHeight * buttonList.size(), headerSize);
       popMatrix();  
     }
     else{
       pushMatrix();
         textSize(textSizeVar);
         text(buttonList.get(0), xPos, yPos);
-        isExpanded = checkStartCollision(mouseX, mouseY, xPos, yPos, textHeight, largestWidth);
+        isExpanded = checkStartCollision(mouseX, mouseY, xPos, yPos, textHeight, headerSize);
       popMatrix();
     }
     
@@ -66,7 +68,7 @@ class UIList{
     int relativeYpos = (int)(py - (y - textHeight));
     int position = relativeYpos / (int)textHeight; // Do integer division on purpose!
     println("position: " + position);
-    if(checkCollision(mouseX, mouseY, xPos, yPos,textHeight * buttonList.size(), largestWidth)){
+    if(checkCollision(mouseX, mouseY, xPos, yPos,textHeight * buttonList.size(), headerSize)){
       
       return buttonList.get(position);
     }
@@ -91,6 +93,10 @@ class UIList{
   }
   
   void modifyListHeader(String inpString){
-    buttonList.set(0, "inpString");
+    buttonList.set(0, inpString);
+  }
+  
+  float getLargestWidth(){
+    return largestWidth;
   }
 }

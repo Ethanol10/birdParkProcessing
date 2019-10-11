@@ -10,10 +10,7 @@ class Background {
 
   //Entities
   Entities entityHandler;
-  UIList weatherButtons;
-  UIList rainModifiers;
-  UIList cloudModifiers;
-  UIList timeModifiers;
+  ListHandler listHandler;
 
   //JSON objects
   JSONObject jsonWeatherData;
@@ -70,14 +67,33 @@ class Background {
     weatherList.add("Turn on/off rain");
     weatherList.add("Turn on/off clouds");
     weatherList.add("Manual/Auto sun switch");
-    weatherButtons = new UIList(weatherList, 50, 50);
-    
+    listHandler = new ListHandler(weatherList, 50, 50);
+
     //Rain
-    rainModifiers.add("Rain: (" + rain.getRainPrecip() + "mm)");
+    ArrayList<String> rainList = new ArrayList<String>();
+    rainList.add("Rain: (" + rain.getRainPrecip() + "mm)");
+    rainList.add("Add 10mm rain");
+    rainList.add("Add 100mm rain");
+    rainList.add("Remove 10mm rain");
+    rainList.add("Remove 100mm rain");
+    listHandler.addList(rainList);
+
     //Cloud
-    cloudModifiers.add("Clouds: (" + cloud.getCloudDensity() + "%)");
+    ArrayList<String> cloudList = new ArrayList<String>();
+    cloudList.add("Cloud: (" + cloud.getCloudDensity() + "%)");
+    cloudList.add("Add 5% cloud");
+    cloudList.add("Add 100% cloud");
+    cloudList.add("Remove 5% cloud");
+    cloudList.add("Remove 100% cloud");
+    listHandler.addList(cloudList);
+    
     //Time
-    timeModifiers.add("Time: (" + sun.currentTime() + ")");
+    ArrayList<String> timeList = new ArrayList<String>();
+    timeList.add("Time: (" + sun.currentTime() + ")");
+    timeList.add("Add 1 hour");
+    timeList.add("Go back 1 hour");
+    listHandler.addList(timeList);
+    //timeModifiers.add("Time: (" + sun.currentTime() + ")");
   }
 
   void drawBackground() {
@@ -104,12 +120,14 @@ class Background {
     //draw rain
     if (drawRain) {
       rain.drawRain();
+      listHandler.lists.get(1).modifyListHeader("Rain: (" + rain.getRainPrecip() + "mm)");
     }
 
     //Draw clouds
     if (drawCloud) {
       //draw Clouds
       cloud.drawClouds();
+      listHandler.lists.get(2).modifyListHeader("Cloud: (" + cloud.getCloudDensity() + "%)");
     }
 
     //Draw Thunder
@@ -117,7 +135,10 @@ class Background {
       //draw Thunder
     }
 
-    weatherButtons.drawUIList();
+    //DrawUI
+    listHandler.lists.get(3).modifyListHeader("Time: (" + sun.currentTime() + ")");   
+    listHandler.drawLists();
+
     //Draw Instructions
     if (drawInstructions) {
       pushMatrix();
@@ -134,7 +155,77 @@ class Background {
   }
 
   void mouseClickedBackground() {
-    weatherButtons.detectPosition(mouseX, mouseY, weatherButtons.xPos, weatherButtons.yPos, weatherButtons.textHeight * weatherButtons.buttonList.size(), weatherButtons.largestWidth);
+    String uiClicked = listHandler.checkCollision();
+    
+    //do stuff based on what string they clicked.
+    //WEATHER
+    if(uiClicked == "Turn on/off rain"){
+      //switch rain
+      setRain();
+    }
+    else if(uiClicked == "Turn on/off clouds"){
+      setClouds();  
+    }
+    else if(uiClicked == "Manual/Auto sun switch"){
+      autoSun();
+    }
+    
+    //RAIN
+    else if(uiClicked == "Add 10mm rain"){
+      for(int i = 0; i < 10; i++){
+        increaseRain();
+      }
+    }
+    else if(uiClicked == "Add 100mm rain"){
+      for(int i = 0; i < 100; i++){
+        increaseRain();  
+      }
+    }
+    else if(uiClicked == "Remove 10mm rain"){
+      for(int i = 0; i < 10; i++){
+        decreaseRain(); 
+      }
+    }
+    else if(uiClicked == "Remove 100mm rain"){
+      for(int i = 0; i < 100; i++){
+        decreaseRain();  
+      }
+    }
+    
+    //Clouds
+    else if(uiClicked == "Add 5% cloud"){
+      for(int i = 0; i < 5; i++){
+        increaseCloud();
+      }
+    }
+    else if(uiClicked == "Add 100% cloud"){
+      for(int i = 0; i < 100; i++){
+        increaseCloud();
+      }
+    }
+    else if(uiClicked == "Remove 5% cloud"){
+      for(int i = 0; i < 5; i++){
+        decreaseCloud();
+      }
+    }
+    else if(uiClicked == "Remove 100% cloud"){
+      for(int i = 0; i < 100; i++){
+        decreaseCloud();
+      }
+    }
+    
+    //Timer
+    else if(uiClicked == "Add 1 hour"){
+      for(int i = 0; i < 60; i++){
+        moveSunForward();    
+        listHandler.lists.get(3).modifyListHeader("Time: (" + sun.currentTime() + ")");
+      }
+    }
+    else if(uiClicked == "Go back 1 hour"){
+      for(int i = 0; i < 60; i++){
+        moveSunBackward(); 
+      }
+    }
   }
 
   void setRain() {
@@ -157,10 +248,14 @@ class Background {
   }
   void increaseRain() {
     rain.increaseRainPrecip();
-    cloud.increaseCloudDen();
   }
   void decreaseRain() {
     rain.decreaseRainPrecip();
+  }
+  void increaseCloud(){
+    cloud.increaseCloudDen();
+  }
+  void decreaseCloud(){
     cloud.decreaseCloudDen();
   }
   void moveSunForward() {
