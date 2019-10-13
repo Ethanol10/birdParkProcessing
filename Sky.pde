@@ -68,10 +68,11 @@ class Sky {
       sunriseFlag = true;
       sunsetFlag = false;
       if (sunMinute < 180) {
-        sunriseOpacity = (float)sunMinute/100 * 150;
+        sunriseOpacity = (float)sunMinute/100 * 150 + 1;
         println("sunriseOpacity = " + sunriseOpacity);
-      } else if (sunMinute >= 180) {
-        sunriseOpacity = (float)(180 - (sunMinute-180))/100 * 150;
+      } 
+      else if (sunMinute >= 180) {
+        sunriseOpacity = (float)(180 - (sunMinute-180))/100 * 150 + 1;
       }
     } 
     else if (sunMinute > 360 && sunMinute <= 540) {

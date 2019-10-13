@@ -3,6 +3,7 @@ class Background {
   Rain rain;
   Clouds cloud;
   Sun sun;
+  Moon moon;
 
   //Background Props
   Ground ground;
@@ -54,12 +55,13 @@ class Background {
     }
 
     //Prepare objects
-    rain = new Rain((int)rainfallMM, 240, 30, 60);
+    rain = new Rain((int)rainfallMM, 240, 15, 30);
     cloud = new Clouds(cloudDensity, 0.2, 100);
     sun = new Sun(240, 150);
     ground = new Ground(0, 240, color(133, 168, 74), color(1, 50, 32));
     sky = new Sky(color(135, 206, 235), color(15, 15, 66), color(255, 149, 6), color(255, 97, 100));
     entityHandler = new Entities();
+    moon = new Moon(150);
 
     //UILIST stuff
     ArrayList<String> weatherList = new ArrayList<String>();
@@ -107,6 +109,8 @@ class Background {
     if (drawSun) {
       sun.drawSun();
     }
+    
+    moon.drawMoon();
 
     //Draw Ground
     if (drawGround) {
