@@ -136,8 +136,9 @@ class Sun {
       manualMinute = 59;
     }
 
-    if (manualHour <= 0) {
+    if (manualHour < 0) {
       manualHour = 23;
+      manualMinute = 59;
     }
   } 
 

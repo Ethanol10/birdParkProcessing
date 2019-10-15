@@ -61,7 +61,7 @@ class Background {
     ground = new Ground(0, 240, color(133, 168, 74), color(1, 50, 32));
     sky = new Sky(color(135, 206, 235), color(15, 15, 66), color(255, 149, 6), color(255, 97, 100));
     entityHandler = new Entities();
-    moon = new Moon(150);
+    moon = new Moon(100);
 
     //UILIST stuff
     ArrayList<String> weatherList = new ArrayList<String>();
@@ -110,7 +110,7 @@ class Background {
       sun.drawSun();
     }
     
-    moon.drawMoon();
+    moon.drawMoon(sun.getCurrentHour(), sun.getCurrentMinute());
 
     //Draw Ground
     if (drawGround) {
