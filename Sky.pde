@@ -1,4 +1,4 @@
-class Sky {
+  class Sky {
   //Colour Variables
   color morningColour;
   color currentColour;
