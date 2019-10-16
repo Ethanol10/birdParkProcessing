@@ -3,15 +3,22 @@ class Cloud{
   float positionY;
   float shiftSpeed;
   int maxDepth;
+  float scale;
+  float opacity;
   
   int cloudWidth = 100; //USE IMAGEWIDTH under PIMAGE when implementing clouds!!!
   
+  PImage cloud;
+  
   //constructor
-  Cloud(float inpShiftSpeed, int inpMaxDepth){
+  Cloud(float inpShiftSpeed, int inpMaxDepth, float inpScale, float inpOpacity){
     shiftSpeed = inpShiftSpeed;
     maxDepth = inpMaxDepth;
     positionX = round(random(0, width));
     positionY = round(random(0, maxDepth));
+    scale = inpScale;
+    cloud = loadImage("cloud.png");
+    opacity = inpOpacity;
   }
   
   //call every draw loop
@@ -19,10 +26,11 @@ class Cloud{
     moveCloud();
     
     pushMatrix();
-      fill(100,100,100, 150);
-      noStroke();
+      imageMode(CORNER);
+      tint(255, opacity);
+      scale(scale);
       translate(positionX, positionY);
-      rect(0, 0, 150, 100);
+      image(cloud, 0, 0);
     popMatrix();
   }
   
@@ -34,7 +42,7 @@ class Cloud{
   
   //check position and move the cloud outside to the otherside of the canvas.
   void checkPosition(){
-    if(positionX >= width + cloudWidth){//REPLACE WITH PIMAGE WIDTH LATER
+    if(positionX >= width + (float)cloud.width/scale){//REPLACE WITH PIMAGE WIDTH LATER
       positionX = (0 - cloudWidth*2);
       positionY = round(random(0, maxDepth));
     }  

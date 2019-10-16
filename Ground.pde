@@ -7,6 +7,8 @@ class Ground{
   //Positioning and size
   int posX;
   int posY;
+  
+  PImage groundProps;
 
   //Constructor
   Ground(int inpX, int inpY, color inpGround, color inpNight){
@@ -14,14 +16,17 @@ class Ground{
     posY = inpY;
     groundColour = inpGround;
     nightGroundColour = inpNight;
+    groundProps = loadImage("backgroundProps.png");
   }
 
   //Draw Ground obv  
   void drawGround(){
     pushMatrix();
+      imageMode(CORNER);
       noStroke();
       fill(currentColour);
       rect(posX, posY, width, height);
+      image(groundProps, 0, 1);
     popMatrix();
   }
   

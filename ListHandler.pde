@@ -20,7 +20,7 @@ class ListHandler {
     lastListX = lists.get(lists.size() - 1).xPos;
     lastListY = lists.get(lists.size() - 1).yPos;
 
-    lists.add(new UIList(inpList, lastListX + (int)lists.get(lists.size() - 1).headerSize +20 , lastListY ));
+    lists.add(new UIList(inpList, lastListX + (int)lists.get(lists.size() - 1).headerSize +40 , lastListY ));
   }
   
   String checkCollision(){

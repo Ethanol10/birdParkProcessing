@@ -41,7 +41,7 @@ class Clouds{
   
   void increaseCloudDen(){
     if(cloudsArr.size() < 100){
-      cloudsArr.add(new Cloud(shiftSpeed, maxDepth));  
+      cloudsArr.add(new Cloud(shiftSpeed, maxDepth, (float)random(0.5,1), (float)random(180, 255)));  
     }
   }
 }
