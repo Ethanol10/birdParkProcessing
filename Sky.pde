@@ -49,17 +49,20 @@
   void drawSky(int inpHour, int inpMin, boolean drawStars) {
     pushMatrix();
     noStroke();
+    imageMode(CENTER);
     fill(currentColour);
     rect(0, 0, width, height);
     popMatrix();
     if (sunsetFlag) {
       pushMatrix();
+      imageMode(CENTER);
       tint(255, sunsetOpacity);
       image(pgTransition, 640, 360);
       popMatrix();
     }
     if (sunriseFlag) {
       pushMatrix();
+      imageMode(CENTER);
       tint(255, sunriseOpacity);
       image(pgTransition, 640, 360);
       popMatrix();
@@ -114,11 +117,19 @@
   }
   
   void instantiateStars(){
-    stars.add( new Star((int)random(0, width), (int)random(0, 240), (int)random(200, 255), (int)random(80, 120), (int)random(2, 4), (int)random(5, 8)));
+    if(stars.size() < 200){
+      stars.add( new Star((int)random(0, width), (int)random(0, 240), (int)random(200, 255), (int)random(80, 120), (int)random(2, 4), (int)random(5, 8)));
+    }
   }
   
   void destroyStar(){
-    stars.remove(stars.size() - 1);
+    if(stars.size() > 0){
+      stars.remove(stars.size() - 1);
+    }
+  }
+  
+  int starDensity(){
+    return stars.size();
   }
 }
 

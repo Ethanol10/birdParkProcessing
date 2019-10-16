@@ -31,6 +31,7 @@ class Star {
   void drawStar(int inpHour, int inpMin) {
     pushMatrix();
       setOpacity(inpHour, inpMin);
+      imageMode(CENTER);
       tint(255, currentOpacity);
       image(starImg, xPos, yPos);
     popMatrix();

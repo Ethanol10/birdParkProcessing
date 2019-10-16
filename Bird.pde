@@ -69,6 +69,7 @@ class Bird {
     pushMatrix();
     scale(1*a, 1);
     tint(255, 255);
+    imageMode(CENTER);
     int x2 = x*a;
     if (i > 0 && i <= 11) {
       y = y2;
@@ -114,6 +115,7 @@ class Bird {
     pushMatrix();
     scale(1*a, 1);
     tint(255, 255);
+    imageMode(CENTER);
     int x2 = x*a;
     if (i >= 2 && i <= 3) {
       y = y2;
@@ -149,6 +151,7 @@ class Bird {
     pushMatrix();
     scale(1*a, 1);
     tint(255, 255);
+    imageMode(CENTER);
     int x2 = x*a;
     y = y2;
     image(chirp[b], x2, y, z, w);
@@ -160,6 +163,7 @@ class Bird {
     pushMatrix();
     scale(1*a, 1);
     tint(255, 255);
+    imageMode(CENTER);
     int x2 = x*a;
     y = y2;
     image(peck[0], x2, y, z, w);
@@ -171,6 +175,7 @@ class Bird {
     pushMatrix();
     scale(1*a, 1);
     tint(255, 255);
+    imageMode(CENTER);
     int x2 = x*a;
     if (i >= 2 && i <= 3) {
       y = y2;
@@ -197,6 +202,7 @@ class Bird {
     pushMatrix();
     scale(1*a, 1);
     tint(255, 255);
+    imageMode(CENTER);
     int x2 = x*a;
     int x3 = -25*a;
     if (i >= 2 && i <= 3) {
@@ -271,6 +277,7 @@ class Bird {
     pushMatrix();
     scale(1*a, 1);
     tint(255, 255);
+    imageMode(CENTER);
     int x2 = x*a;
     int x3 = -20*a;
     int y3 = y2/16;
@@ -318,6 +325,7 @@ class Bird {
     pushMatrix();
     scale(1*a, 1);
     tint(255, 255);
+    imageMode(CENTER);
     int x2 = x*a;
     if (i >= 2 && i <= 3) {
       y = y2;
@@ -343,6 +351,7 @@ class Bird {
     pushMatrix();
     scale(1*a, 1);
     tint(255, 255);
+    imageMode(CENTER);
     int x2 = x*a;
     if (i >= 2 && i <= 3) {
       y = y2;

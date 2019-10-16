@@ -32,12 +32,11 @@ class Background {
   int cloudDensity;
   float rainfallMM;
 
-
   Background() {
     jsonWeatherData = loadJSONObject("http://api.openweathermap.org/data/2.5/weather?q=Sydney,AU&appid=93af9bf890724d81ecaa676f91053303&units=metric");
     try { //retrieve rain data from json object
       rainData = jsonWeatherData.getJSONObject("rain");
-      rainfallMM = rainData.getFloat("3h");
+      rainfallMM = rainData.getFloat("3h") * 10;
       println("rainDensity" + rainfallMM);
     }
     catch(Exception e) {
@@ -47,7 +46,7 @@ class Background {
 
     try { //retrieve cloud data from json object
       cloudData = jsonWeatherData.getJSONObject("clouds");
-      cloudDensity = cloudData.getInt("all");
+      cloudDensity = cloudData.getInt("all")/2;
       println("cloudDensity" + cloudDensity);
     }
     catch(Exception e) {
@@ -59,7 +58,7 @@ class Background {
     rain = new Rain((int)rainfallMM, 240, 15, 30);
     cloud = new Clouds(cloudDensity, 0.2, 100);
     sun = new Sun(240, 150);
-    ground = new Ground(0, 240, color(133, 168, 74), color(1, 50, 32));
+    ground = new Ground(0, 240, color(133, 168, 74), color(1, 92, 59));
     sky = new Sky(color(135, 206, 235), color(15, 15, 66), color(255, 149, 6), color(255, 97, 100), (int)random(80, 150));
     entityHandler = new Entities();
     moon = new Moon(100);
@@ -93,11 +92,17 @@ class Background {
     
     //Time
     ArrayList<String> timeList = new ArrayList<String>();
-    timeList.add("Time: (" + sun.currentTime() + ")");
+    timeList.add("Time: (" + sun.currentTime() + ")" + "(" + autoString() +")");
     timeList.add("Add 1 hour");
     timeList.add("Go back 1 hour");
     listHandler.addList(timeList);
-    //timeModifiers.add("Time: (" + sun.currentTime() + ")");
+    
+    //Sky
+    ArrayList<String> starsList = new ArrayList<String>();
+    starsList.add("Star: (" + sky.starDensity() + ")");
+    starsList.add("Add 10 stars");
+    starsList.add("Remove 10 stars");
+    listHandler.addList(starsList);
   }
 
   void drawBackground() {
@@ -142,7 +147,7 @@ class Background {
     }
 
     //DrawUI
-    listHandler.lists.get(3).modifyListHeader("Time: (" + sun.currentTime() + ")");   
+    listHandler.lists.get(3).modifyListHeader("Time: (" + sun.currentTime() + ")" + "(" + autoString() +")");   
     listHandler.drawLists();
 
     //Draw Instructions
@@ -227,12 +232,27 @@ class Background {
     else if(uiClicked == "Add 1 hour"){
       for(int i = 0; i < 60; i++){
         moveSunForward();    
-        listHandler.lists.get(3).modifyListHeader("Time: (" + sun.currentTime() + ")");
+        listHandler.lists.get(3).modifyListHeader("Time: (" + sun.currentTime() + ")" + "(" + autoString() +")");
       }
     }
     else if(uiClicked == "Go back 1 hour"){
       for(int i = 0; i < 60; i++){
         moveSunBackward(); 
+        listHandler.lists.get(3).modifyListHeader("Time: (" + sun.currentTime() + ")" + "(" + autoString() +")");
+      }
+    }
+    
+    //Stars
+    else if(uiClicked == "Add 10 stars"){
+      for(int i = 0; i < 10; i++){
+        increaseStars();
+        listHandler.lists.get(4).modifyListHeader("Star: (" + sky.starDensity() + ")");
+      }
+    }
+    else if(uiClicked == "Remove 10 stars"){
+      for(int i = 0; i < 10; i++){
+        decreaseStars();
+        listHandler.lists.get(4).modifyListHeader("Star: (" + sky.starDensity() + ")");
       }
     }
   }
@@ -277,6 +297,12 @@ class Background {
   void autoSun() {
     sun.setAutoSun();
   }
+  void increaseStars(){
+    sky.instantiateStars();
+  }
+  void decreaseStars(){
+    sky.destroyStar();
+  }
   void setStars(){
     drawStars = !drawStars;
   }
@@ -284,5 +310,14 @@ class Background {
   //Add food
   void addFood(){
     entityHandler.addEntity();
+  }
+  
+  String autoString(){
+    if(sun.isAutoSun()){
+      return "AUTO";
+    }
+    else{
+      return "MANUAL";
+    }
   }
 }

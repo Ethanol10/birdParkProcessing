@@ -116,6 +116,10 @@ class Sun {
     autoSunMovement = !autoSunMovement;
     println("current Sun set to: " + autoSunMovement);
   }
+  
+  boolean isAutoSun(){
+    return autoSunMovement;
+  }
 
   void sunForward() {
     manualMinute++;
