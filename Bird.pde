@@ -68,6 +68,7 @@ class Bird {
   void peck(int a) { 
     pushMatrix();
     scale(1*a, 1);
+    tint(255, 255);
     int x2 = x*a;
     if (i > 0 && i <= 11) {
       y = y2;
@@ -112,6 +113,7 @@ class Bird {
   void hop(int a) {
     pushMatrix();
     scale(1*a, 1);
+    tint(255, 255);
     int x2 = x*a;
     if (i >= 2 && i <= 3) {
       y = y2;
@@ -146,6 +148,7 @@ class Bird {
   void chirp(int a, int b) {
     pushMatrix();
     scale(1*a, 1);
+    tint(255, 255);
     int x2 = x*a;
     y = y2;
     image(chirp[b], x2, y, z, w);
@@ -156,6 +159,7 @@ class Bird {
   void stand(int a) {
     pushMatrix();
     scale(1*a, 1);
+    tint(255, 255);
     int x2 = x*a;
     y = y2;
     image(peck[0], x2, y, z, w);
@@ -166,6 +170,7 @@ class Bird {
   void crouch(int a) {
     pushMatrix();
     scale(1*a, 1);
+    tint(255, 255);
     int x2 = x*a;
     if (i >= 2 && i <= 3) {
       y = y2;
@@ -191,6 +196,7 @@ class Bird {
   void fly(int a) {
     pushMatrix();
     scale(1*a, 1);
+    tint(255, 255);
     int x2 = x*a;
     int x3 = -25*a;
     if (i >= 2 && i <= 3) {
@@ -264,6 +270,7 @@ class Bird {
   void spawn(int a) {
     pushMatrix();
     scale(1*a, 1);
+    tint(255, 255);
     int x2 = x*a;
     int x3 = -20*a;
     int y3 = y2/16;
@@ -310,6 +317,7 @@ class Bird {
   void land(int a) {
     pushMatrix();
     scale(1*a, 1);
+    tint(255, 255);
     int x2 = x*a;
     if (i >= 2 && i <= 3) {
       y = y2;
@@ -334,6 +342,7 @@ class Bird {
   void moveToFood(int a){
     pushMatrix();
     scale(1*a, 1);
+    tint(255, 255);
     int x2 = x*a;
     if (i >= 2 && i <= 3) {
       y = y2;

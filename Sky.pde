@@ -14,9 +14,12 @@
 
   //Blur Circle
   PGraphics pgTransition;
+  
+  //Stars
+  ArrayList<Star> stars;
 
   //Constructor
-  Sky(color inpMorning, color inpNight, color inpSecondaryTransition, color inpSunset) {
+  Sky(color inpMorning, color inpNight, color inpSecondaryTransition, color inpSunset, int noOfStars) {
     morningColour = inpMorning;
     nightColour = inpNight;
     secondaryTransitionColour = inpSecondaryTransition;
@@ -34,10 +37,16 @@
     pgTransition.filter(BLUR, 60);
     pgTransition.endDraw();
     popMatrix();
+    
+    //Instantiate stars
+    stars = new ArrayList<Star>();
+    for(int i = 0; i < noOfStars; i++){
+      instantiateStars();
+    }
   }
 
   //Draw Ground obv  
-  void drawSky() {
+  void drawSky(int inpHour, int inpMin, boolean drawStars) {
     pushMatrix();
     noStroke();
     fill(currentColour);
@@ -55,6 +64,13 @@
       image(pgTransition, 640, 360);
       popMatrix();
     }
+    
+    if(drawStars){
+      for(int i = 0; i < stars.size(); i++){
+        stars.get(i).drawStar(inpHour, inpMin);
+      }
+    }
+    
   }
 
   //USING THE AMOUNT OF MINUTES PASSED SINCE 6AM. 
@@ -95,6 +111,14 @@
         sunsetOpacity = (float)(180 - (sunMinute-540))/100 * 150;
       }
     }
+  }
+  
+  void instantiateStars(){
+    stars.add( new Star((int)random(0, width), (int)random(0, 240), (int)random(200, 255), (int)random(80, 120), (int)random(2, 4), (int)random(5, 8)));
+  }
+  
+  void destroyStar(){
+    stars.remove(stars.size() - 1);
   }
 }
 

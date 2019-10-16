@@ -9,6 +9,7 @@ void setup() {
   imageMode(CENTER);
   
   backgroundHandler = new Background();
+  
 }
 
 

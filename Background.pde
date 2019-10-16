@@ -26,6 +26,7 @@ class Background {
   boolean drawSun = true;
   boolean drawGround = true;
   boolean drawSky = true;
+  boolean drawStars = true;
 
   //Other Vars
   int cloudDensity;
@@ -59,7 +60,7 @@ class Background {
     cloud = new Clouds(cloudDensity, 0.2, 100);
     sun = new Sun(240, 150);
     ground = new Ground(0, 240, color(133, 168, 74), color(1, 50, 32));
-    sky = new Sky(color(135, 206, 235), color(15, 15, 66), color(255, 149, 6), color(255, 97, 100));
+    sky = new Sky(color(135, 206, 235), color(15, 15, 66), color(255, 149, 6), color(255, 97, 100), (int)random(80, 150));
     entityHandler = new Entities();
     moon = new Moon(100);
 
@@ -69,6 +70,7 @@ class Background {
     weatherList.add("Turn on/off rain");
     weatherList.add("Turn on/off clouds");
     weatherList.add("Manual/Auto sun switch");
+    weatherList.add("Turn on/off stars");
     listHandler = new ListHandler(weatherList, 50, 50);
 
     //Rain
@@ -102,7 +104,7 @@ class Background {
     //Draw Sky
     if (drawSky) {
       sky.calculateSkyColour(sun.calculateMinutes(sun.getCurrentHour(), sun.getCurrentMinute()));
-      sky.drawSky();
+      sky.drawSky(sun.getCurrentHour(), sun.getCurrentMinute(), drawStars);
     }
 
     //Draw Sun
@@ -172,6 +174,9 @@ class Background {
     }
     else if(uiClicked == "Manual/Auto sun switch"){
       autoSun();
+    }
+    else if(uiClicked == "Turn on/off stars"){
+      setStars();
     }
     
     //RAIN
@@ -271,6 +276,9 @@ class Background {
   }
   void autoSun() {
     sun.setAutoSun();
+  }
+  void setStars(){
+    drawStars = !drawStars;
   }
 
   //Add food

@@ -14,8 +14,8 @@ class Moon {
   void drawMoon(int currentHour, int currentMin) {
     setMoonPos(currentHour, currentMin);
     pushMatrix();
-    tint(255, 255);
-    image(moon, posX, posY);
+      tint(245, 243, 206, 255);
+      image(moon, posX, posY);
     popMatrix();
   }
 
