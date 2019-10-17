@@ -96,7 +96,7 @@ class MakeBird {
       stand();
     }
     //chirp when clicked
-    if (checkMouse() && !fly && !spawn && !isMoving && !eating && !moveBack) {
+    if (checkMouse() && !fly && !spawn && !isMoving && !eating && !moveBack && cursorMode) {
       chirp(direction);
     }
     //move to food
