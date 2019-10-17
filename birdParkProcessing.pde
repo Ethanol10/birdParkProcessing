@@ -23,7 +23,7 @@ void setup() {
   foodIcon = loadImage("foodIcon.png");  
   cursorIcon = loadImage("cursorIcon.png");
   
-  cursor(cursor);
+  cursor(cursor, 0, 0);
   backgroundHandler = new Background();
   
 }
@@ -38,10 +38,10 @@ void draw() {
   image(foodIcon, width - 90, 15);
   
   if(foodMode){
-    cursor(foodCursor);
+    cursor(foodCursor, foodCursor.width/2, foodCursor.height/2);
   }
   else{
-    cursor(cursor);
+    cursor(cursor, 0, 0);
   }
 } 
 

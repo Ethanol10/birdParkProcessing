@@ -18,11 +18,7 @@ class Moon {
       imageMode(CENTER);
       tint(245, 243, 206, 255);
       image(moon, posX, posY);
-    popMatrix();
-    
-    println("moonX: " + posX);
-    println("moonY: " + posY);
-    
+    popMatrix();    
   }
 
   void setMoonPos(int currentHour, int currentMin) {
