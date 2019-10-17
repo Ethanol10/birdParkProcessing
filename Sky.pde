@@ -14,6 +14,7 @@
 
   //Blur Circle
   PGraphics pgTransition;
+  PGraphics pgTransition2;
   
   //Stars
   ArrayList<Star> stars;
@@ -34,8 +35,20 @@
     pgTransition.noStroke();
     pgTransition.fill(secondaryTransitionColour);
     pgTransition.ellipse(640, 360, 1280, 720);
-    pgTransition.filter(BLUR, 60);
+    //pgTransition.filter(BLUR, 5);
     pgTransition.endDraw();
+    popMatrix();
+    
+    //2
+    pushMatrix();
+    pgTransition2 = createGraphics(1280, 720, P3D);  
+    imageMode(CENTER);
+    pgTransition2.beginDraw();
+    pgTransition2.noStroke();
+    pgTransition2.fill(secondaryTransitionColour);
+    pgTransition2.ellipse(640, 360, 1280, 720);
+    pgTransition2.filter(BLUR, 60);
+    pgTransition2.endDraw();
     popMatrix();
     
     //Instantiate stars
@@ -54,18 +67,30 @@
     rect(0, 0, width, height);
     popMatrix();
     if (sunsetFlag) {
+      
+      
+      imageMode(CENTER);
+      tint(255, sunsetOpacity/2);
+      image(pgTransition2, 640, 360);
+      
       pushMatrix();
       imageMode(CENTER);
-      tint(255, sunsetOpacity);
+      tint(255, sunsetOpacity/2);
       image(pgTransition, 640, 360);
       popMatrix();
     }
     if (sunriseFlag) {
+      imageMode(CENTER);
+      tint(255, sunriseOpacity/2);
+      image(pgTransition2, 640, 360);
+      
       pushMatrix();
       imageMode(CENTER);
-      tint(255, sunriseOpacity);
+      tint(255, sunriseOpacity/2);
       image(pgTransition, 640, 360);
       popMatrix();
+      
+
     }
     
     if(drawStars){
