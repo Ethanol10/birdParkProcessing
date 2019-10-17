@@ -138,4 +138,8 @@ class Food {
       return false;
     }
   }
+  
+  float getFoodLife(){
+    return life;
+  }
 }  

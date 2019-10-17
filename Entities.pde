@@ -55,6 +55,7 @@ class Entities{
       birds.get(i).use();
       for(int k = 0; k< foods.size(); k++){
         birds.get(i).checkFoodPosition(foods.get(k).getFoodXPosition(),foods.get(k).getFoodYPosition());
+        birds.get(i).checkFoodLife(foods.get(k).getFoodLife());
       }
     }
     
