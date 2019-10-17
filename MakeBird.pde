@@ -60,7 +60,7 @@ class MakeBird {
       println("Audio file not found.");
     }
     sp.setKillOnEnd(false);
-    g = new Gain(ac, 1, 100);
+    g = new Gain(ac, 1, 5);
     g.addInput(sp);
     ac.out.addInput(g);
   }
