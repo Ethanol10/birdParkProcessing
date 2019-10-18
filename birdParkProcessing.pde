@@ -73,7 +73,7 @@ void mousePressed(){
 
 boolean iconCollision(int px, int py, int ix, int iy, int iw, int ih){
   if(px >= ix && px <= ix + iw){
-    if(py >= iy && py <= py + ih){
+    if(py >= iy && py <= iy + ih){
       return true;
     }
   }
