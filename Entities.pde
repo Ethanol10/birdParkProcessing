@@ -1,6 +1,6 @@
 class Entities{
   ArrayList <Food> foods;
-  int foodWidth = 15;
+  int foodWidth = 10;
 
   ArrayList <MakeBird> birds;
     
