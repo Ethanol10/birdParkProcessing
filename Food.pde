@@ -11,7 +11,7 @@ class Food {
   float speed;
   float gravity;
   float birdSpeed = 1;
-  float life = 1000;
+  float life = 500;
 
   float birdX, birdY;
   float birdXFly = 0;
