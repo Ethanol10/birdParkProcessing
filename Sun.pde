@@ -29,6 +29,7 @@ class Sun {
 
   //PGraphics
   PGraphics sunPG;
+  PGraphics outline;
 
   Sun(int inpBaseline, int inpRaiseHeight) {
     sunBaseline = inpBaseline;
@@ -42,8 +43,19 @@ class Sun {
     sunPG.strokeWeight(4);
     sunPG.fill(255, 255, 0);
     sunPG.ellipse(sunRadius, sunRadius, sunRadius, sunRadius);
-    sunPG.filter(BLUR, 10);
+    sunPG.filter(BLUR, 2);
     sunPG.endDraw();
+    popMatrix();
+    
+    pushMatrix();
+    outline = createGraphics((int)sunRadius*2, (int)sunRadius * 2, P3D);
+    outline.beginDraw();
+    outline.stroke(255);
+    outline.strokeWeight(4);
+    outline.noFill();
+    outline.ellipse(sunRadius, sunRadius, sunRadius, sunRadius);
+    outline.endDraw();
+    outline.filter(BLUR, 1);
     popMatrix();
   }
 
@@ -58,6 +70,7 @@ class Sun {
       pushMatrix();
       tint(255, 255);
       imageMode(CENTER);
+      image(outline, xPos, yPos);
       image(sunPG, xPos, yPos);
       popMatrix();
     }
@@ -116,6 +129,10 @@ class Sun {
     autoSunMovement = !autoSunMovement;
     println("current Sun set to: " + autoSunMovement);
   }
+  
+  boolean isAutoSun(){
+    return autoSunMovement;
+  }
 
   void sunForward() {
     manualMinute++;
@@ -136,8 +153,9 @@ class Sun {
       manualMinute = 59;
     }
 
-    if (manualHour <= 0) {
+    if (manualHour < 0) {
       manualHour = 23;
+      manualMinute = 59;
     }
   } 
 
@@ -156,4 +174,3 @@ class Sun {
     return manualMinute;
   }
 }
-
