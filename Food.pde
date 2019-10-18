@@ -16,6 +16,8 @@ class Food {
   float birdX, birdY;
   float birdXFly = 0;
   float birdYFly = 0;
+
+  PImage foodImg;
   
   Food(float tempX, float tempY, float tempW) {
     x = tempX;
@@ -44,16 +46,18 @@ class Food {
     gravity = 0.1;
     birdX = Math.round(random(0, width-50));
     birdY = Math.round(random(0, height-50));
+
+    foodImg = loadImage("food.png");
   }
   
   void display() {
     fill(0,life);
     noStroke();
 
-    ellipse(x, y, w*2, w);
+    image(foodImg, x, y, w*2, w);
     for (int i = 0; i < numOfFood; i++) {
-      ellipse(x+randomFood2[i],y+randomFood1[i],w*2,w);
-      ellipse(x-randomFood1[i],y+randomFood2[i],w*2,w);
+      image(foodImg,x+randomFood2[i],y+randomFood1[i],w*2,w);
+      image(foodImg,x-randomFood1[i],y+randomFood2[i],w*2,w);
     }
 
     //rect(birdX + birdXFly, birdY + birdYFly, 80, 50);
