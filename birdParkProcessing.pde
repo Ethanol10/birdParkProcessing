@@ -1,5 +1,10 @@
 import beads.*;
 import org.jaudiolibs.beads.*;
+import ddf.minim.Minim;
+import ddf.minim.AudioPlayer;
+
+Minim minim;
+AudioPlayer bgSound;
 
 Background backgroundHandler;
 Boolean audio;
@@ -12,6 +17,8 @@ PImage foodCursor;
 
 PImage cursorIcon;
 PImage foodIcon;
+
+
 
 void setup() {
   size(1280, 720, P3D);
@@ -26,6 +33,9 @@ void setup() {
   cursor(cursor, 0, 0);
   backgroundHandler = new Background();
   
+  minim = new Minim(this);
+  bgSound = minim.loadFile("ParkSound.mp3");
+  bgSound.loop();
 }
 
 
