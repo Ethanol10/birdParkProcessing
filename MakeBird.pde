@@ -10,31 +10,63 @@ class MakeBird {
   int interval;
   int flyInterval;
   int spawnInterval;
+  int moveInterval;
+  int eatInterval;
+  int returnInterval;
+
   int wait;
   boolean spawn;
   boolean fly;
+  boolean isMoving;
+  boolean eating;
+  boolean moveBack;
 
   int action;
   int direction; //which way the bird is facing: 1 = left, -1 = right
 
   int foodXPosition;
   int foodYPosition;
-  boolean isMoving = false;
+  boolean foodExists;
+
+  AudioContext ac;
+  String file;
+  SamplePlayer sp;
+  Gain g;
 
   MakeBird(int y) {
     interval = 0;
     flyInterval = 0;
     spawnInterval = 0;
+    moveInterval = 0;
+    eatInterval = 0;
+    returnInterval = 0;
     wait = 0;
-    randomDirection();
-    spawn = true;
-    bird = new Bird((int)random(0, 1280), y, colours[(int)random(10)]);
     foodXPosition = 0;
     foodYPosition = 0;
+
+    randomDirection();
+    spawn = true;
+    isMoving = false;
+    eating = false;
+    moveBack = false;
+    bird = new Bird((int)random(0, 1280), y, colours[(int)random(10)]);
+
+    ac = new AudioContext();
+    file = sketchPath("") + "whistling.mp3";
+    try {
+      sp = new SamplePlayer(ac, new Sample(file));
+    }
+    catch(Exception e) {
+      println("Audio file not found.");
+    }
+    sp.setKillOnEnd(false);
+    g = new Gain(ac, 1, 1);
+    g.addInput(sp);
+    ac.out.addInput(g);
   }
 
 
-   void use() {
+  void use() {
     checkPosition(); //check bird position
     //fly into frame from above
     if (spawn) {
@@ -44,16 +76,16 @@ class MakeBird {
       }
       spawn(direction);
     }
-    stopSpawn();
+    resetIntervals();
     //fly away when noise is loud enough
-    if (fly && !spawn) {
+    if (fly && !spawn && !isMoving && !eating && !moveBack) {
       if (flyInterval == 0) {
         flyInterval += 2;
       }
       fly(direction);
     }
     //randomly peck/hop/stand
-    if (!checkMouse() && !fly && !spawn) {
+    if (!checkMouse() && !fly && !spawn && !isMoving && !eating && !moveBack) {
       if (interval == 0) {
         bird.stand(direction);
         newAction();
@@ -64,10 +96,35 @@ class MakeBird {
       stand();
     }
     //chirp when clicked
-    if (checkMouse() && !fly && !spawn) {
+    if (checkMouse() && !fly && !spawn && !isMoving && !eating && !moveBack && cursorMode) {
       chirp(direction);
     }
+    //move to food
+    if (isMoving && !eating && !moveBack) {
+      if (moveInterval == 0) {
+        moveInterval += 2;
+      }
+      moveToFood(direction);
+    }
+    //eat
+    if (eating) {
+      if (eatInterval == 0) {
+        eatInterval += 2;
+      }
+      eat(getXDirection(bird.x, foodXPosition));
+    }
+    //move back to original position
+    if (moveBack) {
+      if (returnInterval == 0) {
+        returnInterval += 2;
+      }
+      moveBack();
+    }
   }
+
+
+
+
 
 
   void peck() {
@@ -119,10 +176,7 @@ class MakeBird {
       if (interval == 2) {
         randomDirection();
       }
-      if (interval >= 2 && interval <= 3) {
-        bird.stand(direction);
-      }
-      if (interval >= 4 && interval <= 60) {
+      if (interval >= 2 && interval <= 60) {
         bird.stand(direction);
       }
       if (interval >= 60) {
@@ -136,12 +190,14 @@ class MakeBird {
 
 
   void chirp(int a) {
+    sp.setToLoopStart();
     int b = a;
     bird.y = bird.y2;
     if (direction == -1) {
       b = 2;
     }
     bird.chirp(direction, b);
+    ac.start();
     interval = 0;
   }
 
@@ -190,6 +246,63 @@ class MakeBird {
     }
   }
 
+  void moveToFood(int a) {
+    if (moveInterval >= 2 && moveInterval <= 3) {
+      bird.stand(a);
+      bird.startAnimation();
+    }
+    if (moveInterval >= 4) {
+      bird.move(getXDirection(bird.x, foodXPosition), getYDirection(bird.y, height*3/4), distanceFromPointX(foodXPosition), distanceFromPointY(height*3/4));
+    }
+    if (distanceFromPointX(foodXPosition) < 125 && distanceFromPointY(height*3/4) < 75) {
+      bird.stopAnimation();
+      eating = true;
+      isMoving = false;
+    }
+    if (moveInterval > 0) {
+      ++moveInterval;
+    }
+  }
+
+  void eat(int a) {
+    if (eatInterval >= 2 && eatInterval <= 3) {
+      bird.startAnimation();
+    }
+    if (eatInterval >= 4) {
+      bird.eat(a);
+    } 
+    if (eatInterval > 0 && !foodExists) {
+      bird.stopAnimation();
+      moveBack = true;
+      eating = false;
+    }
+    if (eatInterval > 0) {
+      ++eatInterval;
+    }
+  }
+
+
+  void moveBack() {
+    if (returnInterval >= 2 && returnInterval <= 3) {
+      bird.startAnimation();
+    }
+    if (returnInterval >= 4) {
+      bird.moveBack(getXDirection(bird.x, bird.x5), getYDirection(bird.y, bird.y2), distanceFromPointX(bird.x5), distanceFromPointY(bird.y2));
+    }
+    if (returnInterval > 0 && bird.x == bird.x5 && bird.y == bird.y2) {
+      bird.stopAnimation();
+      moveBack = false;
+    }
+    if (returnInterval > 0) {
+      ++returnInterval;
+    }
+  }
+
+
+
+
+
+
 
   void newAction() {
     action = (int)random(1, 7);
@@ -222,7 +335,7 @@ class MakeBird {
     if (bird.y < 0) {
       ++wait;
     }
-    if (audio == true && bird.y == bird.y2){
+    if (audio == true && bird.y == bird.y2) {
       fly = true;
     }
     //wait a bit before the birds respawn
@@ -235,32 +348,79 @@ class MakeBird {
   }
 
 
-  void stopSpawn() {
+  void resetIntervals() {
     if (bird.y == bird.y2) {
       spawn = false;
       spawnInterval = 0;
     }
+    if (isMoving == false) {
+      moveInterval = 0;
+    }
+    if (eating == false) {
+      eatInterval = 0;
+    }
+    if (moveBack == false) {
+      returnInterval = 0;
+    }
   }
 
-  void checkFoodPosition(float foodXPosition, float foodYPosition){
-    if (isMoving == false){
-      if(checkRange(foodXPosition, foodYPosition)){
+
+  void checkFoodPosition(float foodXPosition, float foodYPosition) {
+    if (!isMoving && !eating && !fly && !spawn && !moveBack) {
+      if (checkRange(foodXPosition, foodYPosition)) {
         isMoving = true;
+        foodExists = true;
         this.foodXPosition = int(foodXPosition);
         this.foodYPosition = int(foodYPosition);
       }
     }
   }
 
-  boolean checkRange(float foodXPosition, float foodYPosition){
+  boolean checkRange(float foodXPosition, float foodYPosition) {
     float distX = foodXPosition - bird.x;
     float distY = foodYPosition - bird.y;
     float distance = sqrt( (distX*distX) + (distY*distY) );
-  
+
     if (distance <= 200) {
       return true;
     }
     return false;
   }
+
+  int getXDirection(int birdX, int pointX) {
+    if (pointX > birdX) {
+      return -1;
+    }
+    return 1;
+  }
+
+  int getYDirection(int birdY, int pointY) {
+    if (pointY > birdY) {
+      return -1;
+    }
+    return 1;
+  }
+
+  int distanceFromPointX(int position) {
+    if (getXDirection(bird.x, position) == -1) {
+      return position - bird.x;
+    }
+    return bird.x - position;
+  }
+
+  int distanceFromPointY(int position) {
+    if (getYDirection(bird.y, position) == -1) {
+      return position - bird.y;
+    }
+    return bird.y - position;
+  }
+
+  void checkFoodLife(float foodLife) {
+      if (foodLife == 0) {
+        foodExists = false;
+      } else {
+        foodExists = true;
+      }
+    }
 }
 

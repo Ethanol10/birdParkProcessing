@@ -44,7 +44,7 @@ class Rain{
   }
   
   void increaseRainPrecip(){
-    if(bigRaindrop.size() < 100000){
+    if(bigRaindrop.size() < 250){
       bigRaindrop.add(new Raindrop((int)random(width), (int)random(height), 
         (float)round(random(minSpeed, maxSpeed)), 2.0, color(135,206,250), lTermPoint));
       

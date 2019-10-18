@@ -27,6 +27,7 @@ class Background {
   boolean drawGround = true;
   boolean drawSky = true;
   boolean drawStars = true;
+  boolean drawMoon = true;
 
   //Other Vars
   int cloudDensity;
@@ -70,6 +71,8 @@ class Background {
     weatherList.add("Turn on/off clouds");
     weatherList.add("Manual/Auto sun switch");
     weatherList.add("Turn on/off stars");
+    weatherList.add("Turn on/off sun");
+    weatherList.add("Turn on/off moon");
     listHandler = new ListHandler(weatherList, 50, 50);
 
     //Rain
@@ -117,8 +120,10 @@ class Background {
       sun.drawSun();
     }
     
-    moon.drawMoon(sun.getCurrentHour(), sun.getCurrentMinute());
-
+    if(drawMoon){
+      moon.drawMoon(sun.getCurrentHour(), sun.getCurrentMinute());  
+    }
+  
     //Draw Ground
     if (drawGround) {
       ground.calculateGroundColour(sun.calculateMinutes(sun.getCurrentHour(), sun.getCurrentMinute()));
@@ -182,6 +187,12 @@ class Background {
     }
     else if(uiClicked == "Turn on/off stars"){
       setStars();
+    }
+    else if(uiClicked == "Turn on/off sun"){
+      setSun();
+    }
+    else if(uiClicked == "Turn on/off moon"){
+      setMoon();
     }
     
     //RAIN
@@ -272,6 +283,9 @@ class Background {
   }
   void setSun() {
     drawSun = !drawSun;
+  }
+  void setMoon() {
+    drawMoon = !drawMoon;
   }
   void setGround() {
     drawGround = !drawGround;

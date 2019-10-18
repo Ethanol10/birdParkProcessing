@@ -24,6 +24,7 @@ class Ground{
     pushMatrix();
       imageMode(CORNER);
       noStroke();
+      tint(255, 255);
       fill(currentColour);
       rect(posX, posY, width, height);
       image(groundProps, 0, 1);

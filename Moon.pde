@@ -1,6 +1,6 @@
 class Moon {
   int posX = width - 200;
-  int posY = 200;
+  int posY = 400;
   PImage moon;
   int moonSize;
 
@@ -9,6 +9,7 @@ class Moon {
     moon = loadImage("moon.png");
     moonSize = inpMoonSize;
     moon.resize(moonSize, moonSize);
+    
   }
 
   void drawMoon(int currentHour, int currentMin) {
@@ -17,7 +18,7 @@ class Moon {
       imageMode(CENTER);
       tint(245, 243, 206, 255);
       image(moon, posX, posY);
-    popMatrix();
+    popMatrix();    
   }
 
   void setMoonPos(int currentHour, int currentMin) {
@@ -35,6 +36,9 @@ class Moon {
       println(minAmount);
       
       posY = 50 + (359 - minAmount );
+    }
+    else{
+      posY = height;
     }
   }
 }
