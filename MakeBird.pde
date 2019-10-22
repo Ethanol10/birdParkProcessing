@@ -32,6 +32,7 @@ class MakeBird {
 
   AudioContext ac;
   String file;
+  float pitch;
   SamplePlayer sp;
   Gain g;
 
@@ -64,7 +65,7 @@ class MakeBird {
       println("Audio file not found.");
     }
     sp.setKillOnEnd(false);
-    float pitch = getPitch(colour);
+    pitch = getPitch(colour);
     sp.setRate(new Glide(ac, pitch));
     g = new Gain(ac, 1, 1);
     g.addInput(sp);
@@ -268,14 +269,14 @@ class MakeBird {
     if (moveInterval >= 2 && moveInterval <= 3) {
       bird.x2 = bird.x;
       bird.x3 =  distanceFromPointX(foodXPosition)/8;
-      bird.y3 = distanceFromPointY(height*3/4)/4;
+      bird.y3 = distanceFromPointY(foodYPosition)/4;
       bird.stand(a);
       bird.startAnimation();
     }
     if (moveInterval >= 4) {
-      bird.move(getXDirection(bird.x, foodXPosition), getYDirection(bird.y, height*3/4));
+      bird.move(getXDirection(bird.x, foodXPosition), getYDirection(bird.y, foodYPosition));
     }
-    if (distanceFromPointX(foodXPosition) < 125 && distanceFromPointY(height*3/4) < 75) {
+    if (distanceFromPointX(foodXPosition) < 125 && distanceFromPointY(foodYPosition) < 75) {
       bird.stopAnimation();
       eating = true;
       isMoving = false;
@@ -291,6 +292,9 @@ class MakeBird {
       bird.startAnimation();
     }
     if (eatInterval >= 4) {
+      bird.k += 420*0.00001;
+      bird.l += 380*0.00001;
+      updatePitch(0.00001);
       bird.eat(a);
     } 
     if (eatInterval > 0 && !foodExists) {
@@ -452,6 +456,10 @@ class MakeBird {
     } else {
       foodExists = true;
     }
+  }
+
+  void updatePitch(float number){
+    pitch -= number;
   }
 
 

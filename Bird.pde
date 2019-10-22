@@ -6,7 +6,9 @@ class Bird {
   int i;
 
   int x, y; //position
-  int z, w; //scale values
+  float z, w; //scale values
+  float k;
+  float l;
 
   int y2, x2; //save y and x position
   int x3, y3;
@@ -17,8 +19,10 @@ class Bird {
 
   Bird(int x, int y, String colour) {
     scale = 0.15 +(float)y/2000;
-    z = (int)(420*scale);
-    w = (int)(380*scale);
+    z = 420*scale;
+    w = 380*scale;
+    k = 0;
+    l = 0;
     this.x = x;
     this.y = y;
     y2 = y;
@@ -577,8 +581,8 @@ class Bird {
 
   void setScale() {
     scale = 0.15 +(float)y/2000;
-    z = (int)(420*scale);
-    w = (int)(380*scale);
+    z = 420*scale + k;
+    w = 380*scale + l;
   }
 
 
