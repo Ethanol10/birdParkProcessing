@@ -37,7 +37,7 @@ class Sun {
     autoSunMovement = true;
 
     pushMatrix();
-    sunPG = createGraphics((int)sunRadius * 2, (int)sunRadius * 2, P3D);  
+    sunPG = createGraphics((int)sunRadius * 2, (int)sunRadius * 2, P2D);  
     sunPG.beginDraw();
     sunPG.stroke(255);
     sunPG.strokeWeight(4);
@@ -48,7 +48,7 @@ class Sun {
     popMatrix();
     
     pushMatrix();
-    outline = createGraphics((int)sunRadius*2, (int)sunRadius * 2, P3D);
+    outline = createGraphics((int)sunRadius*2, (int)sunRadius * 2, P2D);
     outline.beginDraw();
     outline.stroke(255);
     outline.strokeWeight(4);

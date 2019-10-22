@@ -18,18 +18,24 @@
   
   //Stars
   ArrayList<Star> stars;
+  PImage starImage;
 
   //Constructor
   Sky(color inpMorning, color inpNight, color inpSecondaryTransition, color inpSunset, int noOfStars) {
     morningColour = inpMorning;
     nightColour = inpNight;
     secondaryTransitionColour = inpSecondaryTransition;
-    sunsetColour = inpSunset;    
-
+    sunsetColour = inpSunset;   
+    
+    pushMatrix();
+      starImage = loadImage("star.png");
+      starImage.resize(15, 15);
+      starImage.filter(BLUR, 2);
+    popMatrix();
 
     //pgSunset
     pushMatrix();
-    pgTransition = createGraphics(1280, 720, P3D);  
+    pgTransition = createGraphics(1280, 720, P2D);  
     imageMode(CENTER);
     pgTransition.beginDraw();
     pgTransition.noStroke();
@@ -41,7 +47,7 @@
     
     //2
     pushMatrix();
-    pgTransition2 = createGraphics(1280, 720, P3D);  
+    pgTransition2 = createGraphics(1280, 720, P2D);  
     imageMode(CENTER);
     pgTransition2.beginDraw();
     pgTransition2.noStroke();
@@ -143,7 +149,7 @@
   
   void instantiateStars(){
     if(stars.size() < 200){
-      stars.add( new Star((int)random(0, width), (int)random(0, 240), (int)random(200, 255), (int)random(80, 120), (int)random(2, 4), (int)random(5, 8)));
+      stars.add( new Star((int)random(0, width), (int)random(0, 240), (int)random(200, 255), (int)random(80, 120), (int)random(2, 4), (int)random(5, 8), starImage));
     }
   }
   

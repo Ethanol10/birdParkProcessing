@@ -21,7 +21,7 @@ PImage foodIcon;
 
 
 void setup() {
-  size(1280, 720, P3D);
+  size(1280, 720, P2D);
   imageMode(CENTER);
   
   cursor = loadImage("cursor.png");
