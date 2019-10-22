@@ -72,6 +72,11 @@ class Entities{
     }
   }
   
+  void setVolumeLimit(float volume){
+    volumeLimit = volumeLimit + volume;
+  }
+  
+  
   //MakeBird has a bird within its class. make a method that allows entities to read those birds and pass relevant 
   //information to food within this class.`
   
