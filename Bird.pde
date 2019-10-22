@@ -7,13 +7,12 @@ class Bird {
 
   int x, y; //position
   int z, w; //scale values
-  
-  int y2, x5; //save y and x position
-  int x3;
-  int x4;
-  int y4;
+
+  int y2, x2; //save y and x position
+  int x3, y3;
 
   float scale;
+
 
 
   Bird(int x, int y, String colour) {
@@ -49,18 +48,20 @@ class Bird {
       fly[i] = loadImage(filename);
     }
 
-    i = 0;    
+    i = 0;
   }
+
 
 
   void startAnimation() {
     //allows animation to start
     i = 2;
   }
-  
+
   void stopAnimation() {
     i = 0;
   }
+
 
 
   void peck(int a) { 
@@ -106,7 +107,6 @@ class Bird {
     }
     popMatrix();
   }
-
 
 
   void hop(int a) {
@@ -344,94 +344,92 @@ class Bird {
     }
     popMatrix();
   }
-  
-   void move(int a, int b, int c, int d) {
+
+
+  void move(int a, int b) {
     pushMatrix();
     scale(1*a, 1);
     tint(255, 255);
     imageMode(CENTER);
-    int x4 = x*a;
+    int x2 = x*a;
     if (i >= 2 && i <= 3) {
-      x3 = c/8;
-      y4 = d/4;
-      x5 = x;
-      image(hop[0], x4, y, z, w);
+      image(hop[0], x2, y, z, w);
     }
     if (i >= 4 && i <= 5) {
-      image(hop[1], x4, y, z, w);
+      image(hop[1], x2, y, z, w);
     }
     if (i >= 6 && i <= 7) {
       shift(-x3*a, -30);
-      shift(0, -y4*b);
-      image(hop[2], x4, y, z, w);
+      shift(0, -y3*b);
+      image(hop[2], x2, y, z, w);
     }    
     if (i >= 8 && i <= 9) {
       shift(-x3*a, 15);
-      image(hop[3], x4, y, z, w);
+      image(hop[3], x2, y, z, w);
     }    
     if (i >= 10 && i <= 11) {
       shift(0, 15);
-      image(hop[1], x4, y, z, w);
+      image(hop[1], x2, y, z, w);
     }  
     if (i >= 12 && i <= 13) {
-      image(hop[0], x4, y, z, w);
+      image(hop[0], x2, y, z, w);
     }
     if (i >= 14 && i <= 15) {
-      image(hop[1], x4, y, z, w);
+      image(hop[1], x2, y, z, w);
     }
     if (i >= 16 && i <= 17) {
       shift(-x3*a, -30);
-      shift(0, -y4*b);
-      image(hop[2], x4, y, z, w);
+      shift(0, -y3*b);
+      image(hop[2], x2, y, z, w);
     }    
     if (i >= 18 && i <= 19) {
       shift(-x3*a, 15);
-      image(hop[3], x4, y, z, w);
+      image(hop[3], x2, y, z, w);
     }    
     if (i >= 20 && i <= 21) {
       shift(0, 15);
-      image(hop[1], x4, y, z, w);
+      image(hop[1], x2, y, z, w);
     }  
     if (i >= 22 && i <= 23) {
-      image(hop[0], x4, y, z, w);
+      image(hop[0], x2, y, z, w);
     }  
     if (i >= 24 && i <= 25) {
-      image(hop[1], x4, y, z, w);
+      image(hop[1], x2, y, z, w);
     }
     if (i >= 26 && i <= 27) {
       shift(-x3*a, -30);
-      shift(0, -y4*b);
-      image(hop[2], x4, y, z, w);
+      shift(0, -y3*b);
+      image(hop[2], x2, y, z, w);
     }    
     if (i >= 28 && i <= 29) {
       shift(-x3*a, 15);
-      image(hop[3], x4, y, z, w);
+      image(hop[3], x2, y, z, w);
     }    
     if (i >= 30 && i <= 31) {
       shift(0, 15);
-      image(hop[1], x4, y, z, w);
+      image(hop[1], x2, y, z, w);
     }  
     if (i >= 32 && i <= 33) {
-      image(hop[0], x4, y, z, w);
+      image(hop[0], x2, y, z, w);
     }  
     if (i >= 34 && i <= 35) {
-      image(hop[1], x4, y, z, w);
+      image(hop[1], x2, y, z, w);
     }
     if (i >= 36 && i <= 37) {
       shift(-x3*a, -30);
-      shift(0, -y4*b);
-      image(hop[2], x4, y, z, w);
+      shift(0, -y3*b);
+      image(hop[2], x2, y, z, w);
     }    
     if (i >= 38 && i <= 39) {
       shift(-x3*a, 15);
-      image(hop[3], x4, y, z, w);
+      image(hop[3], x2, y, z, w);
     }    
     if (i >= 40 && i <= 41) {
       shift(0, 15);
-      image(hop[1], x4, y, z, w);
+      image(hop[1], x2, y, z, w);
     }  
     if (i >= 42) {
-      image(hop[0], x4, y, z, w);
+      image(hop[0], x2, y, z, w);
     }    
     if (i < 42) {
       ++i;
@@ -440,7 +438,7 @@ class Bird {
   }
 
 
-void eat(int a){
+  void eat(int a) {
     pushMatrix();
     scale(1*a, 1);
     tint(255, 255);
@@ -482,81 +480,105 @@ void eat(int a){
     }
     popMatrix();
   }
-  
-  void moveBack(int a, int b, int c, int d) {
+
+
+  void moveBack(int a, int b) {
     pushMatrix();
     scale(1*a, 1);
     tint(255, 255);
     imageMode(CENTER);
-    int x4 = x*a;
+    int x2 = x*a;
     if (i >= 2 && i <= 3) {
-      x3 = c/3;
-      y4 = d/3;
-      image(hop[0], x4, y, z, w);
+      image(hop[0], x2, y, z, w);
     }
     if (i >= 4 && i <= 5) {
-      image(hop[1], x4, y, z, w);
+      image(hop[1], x2, y, z, w);
     }
     if (i >= 6 && i <= 7) {
       shift(-x3*a, -30);
-      shift(0, -y4*b);
-      image(hop[2], x4, y, z, w);
+      shift(0, -y3*b);
+      image(hop[2], x2, y, z, w);
     }    
     if (i >= 8 && i <= 9) {
       shift(-x3*a, 15);
-      image(hop[3], x4, y, z, w);
+      image(hop[3], x2, y, z, w);
     }    
     if (i >= 10 && i <= 11) {
       shift(0, 15);
-      image(hop[1], x4, y, z, w);
+      image(hop[1], x2, y, z, w);
     }  
     if (i >= 12 && i <= 13) {
-      image(hop[0], x4, y, z, w);
+      image(hop[0], x2, y, z, w);
     }
     if (i >= 14 && i <= 15) {
-      image(hop[1], x4, y, z, w);
+      image(hop[1], x2, y, z, w);
     }
     if (i >= 16 && i <= 17) {
       shift(-x3*a, -30);
-      shift(0, -y4*b);
-      image(hop[2], x4, y, z, w);
+      shift(0, -y3*b);
+      image(hop[2], x2, y, z, w);
     }    
     if (i >= 18 && i <= 19) {
       shift(-x3*a, 15);
-      image(hop[3], x4, y, z, w);
+      image(hop[3], x2, y, z, w);
     }    
     if (i >= 20 && i <= 21) {
       shift(0, 15);
-      image(hop[1], x4, y, z, w);
+      image(hop[1], x2, y, z, w);
     }  
     if (i >= 22 && i <= 23) {
-      image(hop[0], x4, y, z, w);
+      image(hop[0], x2, y, z, w);
     }  
     if (i >= 24 && i <= 25) {
-      image(hop[1], x4, y, z, w);
+      image(hop[1], x2, y, z, w);
     }
     if (i >= 26 && i <= 27) {
       shift(-x3*a, -30);
-      shift(0, -y4*b);
-      image(hop[2], x4, y, z, w);
+      shift(0, -y3*b);
+      image(hop[2], x2, y, z, w);
     }    
     if (i >= 28 && i <= 29) {
       shift(-x3*a, 15);
-      image(hop[3], x4, y, z, w);
+      image(hop[3], x2, y, z, w);
     }    
     if (i >= 30 && i <= 31) {
       shift(0, 15);
-      image(hop[1], x4, y, z, w);
+      image(hop[1], x2, y, z, w);
     }  
-    if (i >= 32) {
-      image(hop[0], x4, y, z, w);
-      x = x5;
-      y = y2;
+    if (i >= 32 && i <= 33) {
+      image(hop[0], x2, y, z, w);
+    }  
+    if (i >= 34 && i <= 35) {
+      image(hop[1], x2, y, z, w);
+    }
+    if (i >= 36 && i <= 37) {
+      shift(-x3*a, -30);
+      shift(0, -y3*b);
+      image(hop[2], x2, y, z, w);
     }    
-    if (i < 32) {
+    if (i >= 38 && i <= 39) {
+      shift(-x3*a, 15);
+      image(hop[3], x2, y, z, w);
+    }    
+    if (i >= 40 && i <= 41) {
+      shift(0, 15);
+      image(hop[1], x2, y, z, w);
+    }  
+    if (i >= 42) {
+      image(hop[0], x2, y, z, w);
+    }    
+    if (i < 42) {
       ++i;
     }
     popMatrix();
+  }
+
+
+
+  void setScale() {
+    scale = 0.15 +(float)y/2000;
+    z = (int)(420*scale);
+    w = (int)(380*scale);
   }
 
 

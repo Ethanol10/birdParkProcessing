@@ -3,8 +3,9 @@ class MakeBird {
 
   //bird colours
   String [] colours = {
-    "red", "orange", "yellow", "green", "blue", "purple", "navy", "pink", "white", "black"
+    "black", "purple", "navy", "blue", "green", "orange", "yellow", "red", "pink", "white"
   };
+  int colour;
 
   //control animation
   int interval;
@@ -27,11 +28,13 @@ class MakeBird {
   int foodXPosition;
   int foodYPosition;
   boolean foodExists;
+  float foodLife;
 
   AudioContext ac;
   String file;
   SamplePlayer sp;
   Gain g;
+
 
   MakeBird(int y) {
     interval = 0;
@@ -49,10 +52,11 @@ class MakeBird {
     isMoving = false;
     eating = false;
     moveBack = false;
-    bird = new Bird((int)random(0, 1280), y, colours[(int)random(10)]);
+    colour = (int)random(10);
+    bird = new Bird((int)random(0, 1280), y, colours[colour]);
 
     ac = new AudioContext();
-    file = sketchPath("") + "whistling.mp3";
+    file = sketchPath("") + "bird.mp3";
     try {
       sp = new SamplePlayer(ac, new Sample(file));
     }
@@ -60,15 +64,19 @@ class MakeBird {
       println("Audio file not found.");
     }
     sp.setKillOnEnd(false);
+    float pitch = getPitch(colour);
+    sp.setRate(new Glide(ac, pitch));
     g = new Gain(ac, 1, 1);
     g.addInput(sp);
     ac.out.addInput(g);
   }
 
 
-  void use() {
+  void use() {   
     checkPosition(); //check bird position
-    //fly into frame from above
+    checkFoodLife();
+
+      //fly into frame from above
     if (spawn) {
       if (spawnInterval == 0) {
         bird.respawn();
@@ -76,6 +84,7 @@ class MakeBird {
       }
       spawn(direction);
     }
+
     resetIntervals();
     //fly away when noise is loud enough
     if (fly && !spawn && !isMoving && !eating && !moveBack) {
@@ -84,8 +93,10 @@ class MakeBird {
       }
       fly(direction);
     }
+
     //randomly peck/hop/stand
     if (!checkMouse() && !fly && !spawn && !isMoving && !eating && !moveBack) {
+      bird.setScale();
       if (interval == 0) {
         bird.stand(direction);
         newAction();
@@ -95,35 +106,40 @@ class MakeBird {
       hop();
       stand();
     }
+
     //chirp when clicked
     if (checkMouse() && !fly && !spawn && !isMoving && !eating && !moveBack && cursorMode) {
+      bird.setScale();
       chirp(direction);
     }
+
     //move to food
     if (isMoving && !eating && !moveBack) {
+      bird.setScale();
       if (moveInterval == 0) {
         moveInterval += 2;
       }
       moveToFood(direction);
     }
+
     //eat
     if (eating) {
+      bird.setScale();
       if (eatInterval == 0) {
         eatInterval += 2;
       }
       eat(getXDirection(bird.x, foodXPosition));
     }
+
     //move back to original position
     if (moveBack) {
+      bird.setScale();
       if (returnInterval == 0) {
         returnInterval += 2;
       }
       moveBack();
     }
   }
-
-
-
 
 
 
@@ -197,6 +213,7 @@ class MakeBird {
       b = 2;
     }
     bird.chirp(direction, b);
+    sp.setToLoopStart();
     ac.start();
     interval = 0;
   }
@@ -246,13 +263,17 @@ class MakeBird {
     }
   }
 
+
   void moveToFood(int a) {
     if (moveInterval >= 2 && moveInterval <= 3) {
+      bird.x2 = bird.x;
+      bird.x3 =  distanceFromPointX(foodXPosition)/8;
+      bird.y3 = distanceFromPointY(height*3/4)/4;
       bird.stand(a);
       bird.startAnimation();
     }
     if (moveInterval >= 4) {
-      bird.move(getXDirection(bird.x, foodXPosition), getYDirection(bird.y, height*3/4), distanceFromPointX(foodXPosition), distanceFromPointY(height*3/4));
+      bird.move(getXDirection(bird.x, foodXPosition), getYDirection(bird.y, height*3/4));
     }
     if (distanceFromPointX(foodXPosition) < 125 && distanceFromPointY(height*3/4) < 75) {
       bird.stopAnimation();
@@ -263,6 +284,7 @@ class MakeBird {
       ++moveInterval;
     }
   }
+
 
   void eat(int a) {
     if (eatInterval >= 2 && eatInterval <= 3) {
@@ -284,29 +306,30 @@ class MakeBird {
 
   void moveBack() {
     if (returnInterval >= 2 && returnInterval <= 3) {
+      bird.x3 =  distanceFromPointX(bird.x2)/8;
+      bird.y3 = distanceFromPointY(bird.y2)/4;
       bird.startAnimation();
     }
     if (returnInterval >= 4) {
-      bird.moveBack(getXDirection(bird.x, bird.x5), getYDirection(bird.y, bird.y2), distanceFromPointX(bird.x5), distanceFromPointY(bird.y2));
+      bird.moveBack(getXDirection(bird.x, bird.x2), getYDirection(bird.y, bird.y2));
     }
-    if (returnInterval > 0 && bird.x == bird.x5 && bird.y == bird.y2) {
+    if (returnInterval >= 45 || (bird.x == bird.x2 && bird.y == bird.y2)) {
+      bird.x = bird.x2;
+      bird.y = bird.y2;
       bird.stopAnimation();
       moveBack = false;
     }
-    if (returnInterval > 0) {
+    if (returnInterval > 0 && returnInterval <= 45) {
       ++returnInterval;
     }
   }
 
 
 
-
-
-
-
   void newAction() {
     action = (int)random(1, 7);
   }
+
 
   void randomDirection() {
     direction = (int)random(0, 2);
@@ -365,16 +388,18 @@ class MakeBird {
   }
 
 
-  void checkFoodPosition(float foodXPosition, float foodYPosition) {
+  void checkFoodPosition(float foodXPosition, float foodYPosition, float foodLife) {
     if (!isMoving && !eating && !fly && !spawn && !moveBack) {
       if (checkRange(foodXPosition, foodYPosition)) {
         isMoving = true;
+        this.foodLife = foodLife;
         foodExists = true;
         this.foodXPosition = int(foodXPosition);
         this.foodYPosition = int(foodYPosition);
       }
     }
   }
+
 
   boolean checkRange(float foodXPosition, float foodYPosition) {
     float distX = foodXPosition - bird.x;
@@ -386,6 +411,7 @@ class MakeBird {
     }
     return false;
   }
+
 
   int getXDirection(int birdX, int pointX) {
     if (pointX > birdX) {
@@ -401,6 +427,7 @@ class MakeBird {
     return 1;
   }
 
+
   int distanceFromPointX(int position) {
     if (getXDirection(bird.x, position) == -1) {
       return position - bird.x;
@@ -415,12 +442,21 @@ class MakeBird {
     return bird.y - position;
   }
 
-  void checkFoodLife(float foodLife) {
-      if (foodLife == 0) {
-        foodExists = false;
-      } else {
-        foodExists = true;
-      }
+
+  void checkFoodLife() {
+    if (foodLife > 0) {
+      --foodLife;
     }
+    if (foodLife == 0) {
+      foodExists = false;
+    } else {
+      foodExists = true;
+    }
+  }
+
+
+  float getPitch(int colour) {
+    return 0.8+(colour*0.2);
+  }
 }
 
