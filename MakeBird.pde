@@ -35,7 +35,8 @@ class MakeBird {
   float pitch;
   SamplePlayer sp;
   Gain g;
-
+  
+  
 
   MakeBird(int y) {
     interval = 0;
@@ -55,7 +56,7 @@ class MakeBird {
     moveBack = false;
     colour = (int)random(10);
     bird = new Bird((int)random(0, 1280), y, colours[colour]);
-
+ 
     ac = new AudioContext();
     file = sketchPath("") + "bird.mp3";
     try {
@@ -67,7 +68,7 @@ class MakeBird {
     sp.setKillOnEnd(false);
     pitch = getPitch(colour);
     sp.setRate(new Glide(ac, pitch));
-    g = new Gain(ac, 1, 1);
+    g = new Gain(ac, 1, 0.1);
     g.addInput(sp);
     ac.out.addInput(g);
   }
@@ -76,6 +77,7 @@ class MakeBird {
   void use() {   
     checkPosition(); //check bird position
     checkFoodLife();
+    sp.setRate(new Glide(ac, pitch));
 
       //fly into frame from above
     if (spawn) {
@@ -292,9 +294,9 @@ class MakeBird {
       bird.startAnimation();
     }
     if (eatInterval >= 4) {
-      bird.k += 420*0.00001;
-      bird.l += 380*0.00001;
-      updatePitch(0.00001);
+      bird.k += 420*0.0001;
+      bird.l += 380*0.0001;
+      updatePitch(0.001);
       bird.eat(a);
     } 
     if (eatInterval > 0 && !foodExists) {
@@ -362,7 +364,7 @@ class MakeBird {
     if (bird.y < 0) {
       ++wait;
     }
-    if (audio == true && bird.y == bird.y2) {
+    if (audio == true && bird.y == bird.y2 && !eating && !isMoving && !moveBack) {
       fly = true;
     }
     //wait a bit before the birds respawn
@@ -459,7 +461,9 @@ class MakeBird {
   }
 
   void updatePitch(float number){
-    pitch -= number;
+    if(pitch > 0.5){
+      pitch -= number;
+    }
   }
 
 
