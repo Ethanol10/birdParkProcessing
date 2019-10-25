@@ -1,6 +1,10 @@
 # birdParkProcessing
 Processing task for UTS
 
+Video of the program: 
+
+https://www.youtube.com/watch?v=OJaIod8_N0A&feature=youtu.be
+
 ## INSTRUCTIONS:
 Pressing ‘i’ shows a debug menu that provides key inputs to control certain weather elements. 
 
