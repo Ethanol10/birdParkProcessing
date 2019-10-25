@@ -1,7 +1,7 @@
 # birdParkProcessing
 Processing task for UTS
 
-##INSTRUCTIONS:
+## INSTRUCTIONS:
 Pressing ‘i’ shows a debug menu that provides key inputs to control certain weather elements. 
 
 The strings at the top of the page open up to show a list of commands for the specified object listed at the top of the list.
