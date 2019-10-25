@@ -8,9 +8,11 @@ class Entities{
   int numberOfBirds;
   AudioContext ac;
   UGen microphoneIn;
+  float volumeLimit;
   
   Entities(){
     audio = false;
+    volumeLimit = 0.07;
 
     numberOfBirds = 15;
     y = new int[numberOfBirds];
@@ -54,8 +56,7 @@ class Entities{
     for (int i = 0; i < numberOfBirds; ++i) {
       birds.get(i).use();
       for(int k = 0; k< foods.size(); k++){
-        birds.get(i).checkFoodPosition(foods.get(k).getFoodXPosition(),foods.get(k).getFoodYPosition());
-        birds.get(i).checkFoodLife(foods.get(k).getFoodLife());
+        birds.get(i).checkFoodPosition(foods.get(k).getFoodXPosition(),foods.get(k).getFoodYPosition(), foods.get(k).getFoodLife());
       }
     }
     
@@ -66,10 +67,15 @@ class Entities{
   }
   
   void checkAudio() {
-    if (microphoneIn.getOutBuffer(0)[0] > 0.07) {
+    if (microphoneIn.getOutBuffer(0)[0] > volumeLimit) {
       audio = true;
     }
   }
+  
+  void setVolumeLimit(float volume){
+    volumeLimit = volumeLimit + volume;
+  }
+  
   
   //MakeBird has a bird within its class. make a method that allows entities to read those birds and pass relevant 
   //information to food within this class.`

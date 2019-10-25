@@ -106,6 +106,14 @@ class Background {
     starsList.add("Add 10 stars");
     starsList.add("Remove 10 stars");
     listHandler.addList(starsList);
+    
+    //Volume
+    ArrayList<String> volumeList = new ArrayList<String>();
+    volumeList.add("Volume limit: (" + entityHandler.volumeLimit + ")");
+    volumeList.add("Increase limit");
+    volumeList.add("Reduce limit");
+    volumeList.add("Reset limit");
+    listHandler.addList(volumeList);
   }
 
   void drawBackground() {
@@ -265,6 +273,23 @@ class Background {
         decreaseStars();
         listHandler.lists.get(4).modifyListHeader("Star: (" + sky.starDensity() + ")");
       }
+    }
+    
+    //Volume
+    if(uiClicked == "Increase limit"){
+        entityHandler.setVolumeLimit(0.01);
+        String a = nf(entityHandler.volumeLimit, 1, 2);
+        listHandler.lists.get(5).modifyListHeader("Volume limit: (" + a + ")");
+    }
+    else if(uiClicked == "Reduce limit"){
+      entityHandler.setVolumeLimit(-0.01);
+      String a = nf(entityHandler.volumeLimit, 1, 2);  
+      listHandler.lists.get(5).modifyListHeader("Volume limit: (" + a + ")");
+    }
+    else if(uiClicked == "Reset limit"){
+      entityHandler.setVolumeLimit(-entityHandler.volumeLimit + 0.07);
+      String a = nf(entityHandler.volumeLimit, 1, 2);
+      listHandler.lists.get(5).modifyListHeader("Volume limit: (" + a + ")");
     }
   }
   

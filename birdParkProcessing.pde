@@ -21,16 +21,19 @@ PImage foodIcon;
 
 
 void setup() {
-  size(1280, 720, P3D);
+  size(1280, 720, P2D);
   imageMode(CENTER);
   
-  foodCursor = loadImage("foodCursor.png");  
   cursor = loadImage("cursor.png");
+  noCursor();
+  
+  //foodCursor = loadImage("foodCursor.png");  
+  //cursor = loadImage("cursor.png");
   
   foodIcon = loadImage("foodIcon.png");  
   cursorIcon = loadImage("cursorIcon.png");
   
-  cursor(cursor, 0, 0);
+ // cursor(cursor, 0, 0);
   backgroundHandler = new Background();
   
   minim = new Minim(this);
@@ -44,15 +47,25 @@ void draw() {
   backgroundHandler.drawBackground();
   imageMode(CORNER);
   tint(255, 255);
+  
   image(cursorIcon, width - 180, 15);
   image(foodIcon, width - 90, 15);
+  image(cursor, mouseX, mouseY, 30, 30);
+  if(foodMode){
+    cursor = loadImage("foodCursor.png");
+  }
+  else{
+    cursor = loadImage("cursor.png");
+  }
   
+  /*
   if(foodMode){
     cursor(foodCursor, foodCursor.width/2, foodCursor.height/2);
   }
   else{
     cursor(cursor, 0, 0);
   }
+  */
 } 
 
 void mousePressed(){

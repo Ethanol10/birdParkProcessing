@@ -11,7 +11,7 @@ class Food {
   float speed;
   float gravity;
   float birdSpeed = 1;
-  float life = 1000;
+  float life = 500;
 
   float birdX, birdY;
   float birdXFly = 0;
@@ -42,7 +42,7 @@ class Food {
       randomFood2[i] = random(10, 80);
     }
 
-    speed = 0;
+    speed = 0.1;
     gravity = 0.1;
     birdX = Math.round(random(0, width-50));
     birdY = Math.round(random(0, height-50));
@@ -64,8 +64,7 @@ class Food {
   }
 
   void move() {
-    if (y < height*3/4) {
-      speed = speed + gravity;
+    if (speed < 3){
       y = y + speed;
       for (int i = 0; i < numOfFood; i++) {
         randomFood1[i] += i*0.15;
@@ -74,7 +73,10 @@ class Food {
       if (w < wStill) {
         w = w + 0.15;
       }
+      speed = speed + 0.1;
     }
+    
+    
   }
 
   float getFoodXPosition(){

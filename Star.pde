@@ -14,12 +14,10 @@ class Star {
   //Pimage
   PImage starImg;
 
-  Star(int inpX, int inpY, int inpUOpacity, int inpLOpacity, float inpMinDelta, float inpMaxDelta) {
+  Star(int inpX, int inpY, int inpUOpacity, int inpLOpacity, float inpMinDelta, float inpMaxDelta, PImage inpStarImg) {
     xPos = inpX;
     yPos = inpY;
-    starImg = loadImage("star.png");
-    starImg.resize(15, 15);
-    starImg.filter(BLUR, 2);
+    starImg = inpStarImg;
     minDelta = inpMinDelta;
     maxDelta = inpMaxDelta;
     opacityDelta = (float)round(random(minDelta, maxDelta));
